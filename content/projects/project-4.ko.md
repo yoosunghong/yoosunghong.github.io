@@ -27,12 +27,16 @@ math: true
 ---
 ## 기술 스택
 
-* **Blockchain / DID Ledger**: Hyperledger Indy (탈중앙 신원 관리 및 DID/VC 발급·검증)
-* **IoT Communication**: MQTT (Mosquitto Broker)
-* **Metaverse Engine**: Unity 3D
-* **Backend**: Node.js, Express.js
-* **Frontend**: React.js
-* **Database**: MongoDB
+| Category | Technologies |
+|---|---|
+| **Blockchain / DID Ledger** | Hyperledger Indy |
+| **IoT Communication** | MQTT (Mosquitto Broker) |
+| **Metaverse Engine** | Unity 3D |
+| **Backend** | Node.js, Express.js |
+| **Frontend** | React.js |
+| **Database** | MongoDBal Engine 5 (UE5) |
+| **Language** | C#, Ptthon |
+
 
 ---
 

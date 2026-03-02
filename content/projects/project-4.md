@@ -30,12 +30,15 @@ This project focuses on developing a decentralized platform for secure and effic
 
 ## Technical Stack
 
-* **Blockchain / DID Ledger**: Hyperledger Indy (Decentralized Identity Management, DID/VC Issuance & Verification)
-* **IoT Communication**: MQTT (Mosquitto Broker)
-* **Metaverse Engine**: Unity 3D
-* **Backend**: Node.js, Express.js
-* **Frontend**: React.js
-* **Database**: MongoDB
+| Category | Technologies |
+|---|---|
+| **Blockchain / DID Ledger** | Hyperledger Indy |
+| **IoT Communication** | MQTT (Mosquitto Broker) |
+| **Metaverse Engine** | Unity 3D |
+| **Backend** | Node.js, Express.js |
+| **Frontend** | React.js |
+| **Database** | MongoDBal Engine 5 (UE5) |
+| **Language** | C#, Ptthon |
 
 ---
 

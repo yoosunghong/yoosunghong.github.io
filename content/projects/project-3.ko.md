@@ -26,11 +26,13 @@ math: true
 
 ## 기술 스택
 
-* **Game Engine**: Unreal Engine 5 (UE5)
-* **AI Architecture**: Behavior Tree, AI Controller
-* **Design Patterns**: Observer, Facade, Component Pattern
-* **Platform**: Windows (VR Support)
-* **Language**: C++, Blueprint
+| Category | Technologies |
+|---|---|
+| **Game Engine** | Unreal Engine 5 (UE5) |
+| **AI Architecture** | Behavior Tree, AI Controller |
+| **Design Patterns** | Observer, Facade, Component Pattern |
+| **Platform** | Windows (VR Support) |
+| **Language** | Blueprint |
 
 ---
 
@@ -82,7 +84,16 @@ math: true
 
 ## 결과
 
+* **2023 G-STAR** 전시 참여 및 시연 완료.
 * **2024 부산경남지역 게임전시회 Build 051** 전시 참여 및 시연 완료.
-* **성과**: 복잡한 게임 로직을 디자인 패턴으로 정돈하여 대규모 전투 상황에서도 안정적인 프레임과 논리적 무결성을 증명함.
+
+{{< img-grid 
+    src1="/images/project3/picture1.jpg" 
+    class1="w-3/4 mx-auto" 
+
+    src2="/images/project3/picture2.jpg" 
+
+    class="max-w-full"
+>}}
 
 <br>

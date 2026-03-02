@@ -33,11 +33,12 @@ This project aims to develop a hierarchical AI framework using the Unity engine 
 
 ## Tech Stack
 
-* **Game Engine**: Unity 3D 
-* **AI Architecture**: Behavior Tree, GOAP (Goal-Oriented Action Planning), Utility System
-* **Tools/Assets**: Behavior Designer 
-* **Language**: C#
-
+| Category | Technologies |
+|---|---|
+| **Game Engine** | Unity 3D |
+| **AI Architecture** | Behavior Tree, GOAP (Goal-Oriented Action Planning), Utility System |
+| **Tools/Assets** | Behavior Designer |
+| **Language** | C# |
 ---
 
 ## Key Features

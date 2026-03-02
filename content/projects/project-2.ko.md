@@ -29,10 +29,13 @@ math: true
 
 ## 기술 스택
 
-* **Game Engine**: Unity 3D 
-* **AI Architecture**: Behavior Tree, GOAP (Goal-Oriented Action Planning), Utility System
-* **Tools/Assets**: Behavior Designer 
-* **Language**: C#
+| Category | Technologies |
+|---|---|
+| **Game Engine** | Unity 3D |
+| **AI Architecture** | Behavior Tree, GOAP (Goal-Oriented Action Planning), Utility System |
+| **Tools/Assets** | Behavior Designer |
+| **Language** | C# |
+
 
 ---
 
@@ -107,7 +110,7 @@ $$U_{final} = \max(w_1 \cdot U_1, w_2 \cdot U_2, \dots, w_n \cdot U_n)$$
 
 * **ScriptableObject 기반 모듈 조합**: '체력 검사', '거리 산출' 등의 평가 로직을 에셋화하여 기획자가 인스펙터 상에서 레고 블록처럼 조합할 수 있는 워크플로우를 구축, **AI 저작 비용(Authoring Cost)을 획기적으로 절감**했습니다.
 
-* **인터페이스 기반 확장성 (OCP 준수)**: 플래너 런타임과 개별 액션 로직을 추상 클래스로 엄격히 분리했습니다. 새로운 액션 타입을 추가할 때 플래너 수정 없이 인터페이스만 구현하면 되므로, **개방-폐쇄 원칙(Open-Closed Principle)**을 충족합니다.
+* **인터페이스 기반 확장성 (OCP 준수)**: 플래너 런타임과 개별 액션 로직을 추상 클래스로 엄격히 분리했습니다. 새로운 액션 타입을 추가할 때 플래너 수정 없이 인터페이스만 구현하면 되므로, **개방-폐쇄 원칙(Open-Closed Principle)** 을 충족합니다.
 
 ```csharp
 // Abstract base — one method contract, zero runtime coupling

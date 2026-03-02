@@ -24,11 +24,13 @@ This project is a **VR FPS shooting game** developed using Unreal Engine 5. Rath
 
 ## Tech Stack
 
-* **Game Engine**: Unreal Engine 5 (UE5)
-* **AI Architecture**: Behavior Tree, AI Controller
-* **Design Patterns**: Observer, Facade, Component Pattern
-* **Platform**: Windows (VR Support)
-* **Language**: C++, Blueprints
+| Category | Technologies |
+|---|---|
+| **Game Engine** | Unreal Engine 5 (UE5) |
+| **AI Architecture** | Behavior Tree, AI Controller |
+| **Design Patterns** | Observer, Facade, Component Pattern |
+| **Platform** | Windows (VR Support) |
+| **Language** | Blueprint |
 
 ---
 
@@ -82,6 +84,16 @@ This project is a **VR FPS shooting game** developed using Unreal Engine 5. Rath
 ## Results
 
 * Exhibited and demonstrated at the **2024 Busan-Gyeongnam Game Exhibition (Build 051)**.
-* **Achievement**: Successfully proved logical integrity and frame stability in large-scale combat scenarios by organizing complex game logic through design patterns.
+* Exhibited and demonstrated at the **2023 G-STAR** competition.
+
+
+{{< img-grid 
+    src1="/images/project3/picture1.jpg" 
+    class1="w-3/4 mx-auto" 
+
+    src2="/images/project3/picture2.jpg" 
+
+    class="max-w-full"
+>}}
 
 <br>
