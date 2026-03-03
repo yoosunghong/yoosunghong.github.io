@@ -6,7 +6,7 @@ translationKey: "project-1"
 duration: "2025.08 ~ 2026.03"
 team_size: "1명"
 role: "메인 프로그래머"
-github: "https://github.com/Hongyoosung/GOBTv2.0"
+github: "https://github.com/yoosunghong/GOBTv2.0"
 math: true
 ---
 

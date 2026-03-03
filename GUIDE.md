@@ -475,7 +475,7 @@ Deployment is fully automated via GitHub Actions (`.github/workflows/hugo.yaml`)
    git push
    ```
 3. GitHub Actions builds the site and deploys to GitHub Pages automatically
-4. The live site at `https://Hongyoosung.github.io/` updates within ~1–2 minutes
+4. The live site at `yoosung.dev` updates within ~1–2 minutes
 
 **To publish a draft post**, change `draft: false` in the post's front matter before committing.
 

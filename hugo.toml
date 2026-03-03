@@ -1,4 +1,4 @@
-baseURL = "https://Hongyoosung.github.io/"
+baseURL = "yoosung.dev"
 title = "Yoosung's Dev Log"
 theme = "PaperMod"
 defaultContentLanguage = 'en'
@@ -37,7 +37,7 @@ defaultContentLanguage = 'en'
         <span class="subtitle-highlight">An engineer</span> specializing in the <br class="subtitle-br"/> architectural innovation of game AI systems.
         """
         
-        imageUrl = "https://github.com/Hongyoosung.png" # (디자인상 숨김 처리되지만 데이터 유지)
+        imageUrl = "https://github.com/yoosunghong.png" # (디자인상 숨김 처리되지만 데이터 유지)
         imageWidth = 120
         imageHeight = 120
         
@@ -58,7 +58,7 @@ defaultContentLanguage = 'en'
     # 소셜 아이콘 (FontAwesome 클래스명 매핑: github, linkedin 등)
     [[languages.en.params.socialIcons]]
         name = "github"
-        url = "https://github.com/Hongyoosung"
+        url = "https://github.com/yoosunghong"
     [[languages.en.params.socialIcons]]
         name = "linkedin"
         url = "https://www.linkedin.com/in/yoosunghong/"
@@ -80,7 +80,7 @@ defaultContentLanguage = 'en'
         <span class="subtitle-highlight">게임 메커니즘</span>의 AI 시스템 혁신을 설계하는 엔지니어입니다.
         """
         
-        imageUrl = "https://github.com/Hongyoosung.png"
+        imageUrl = "https://github.com/yoosunghong.png"
         
         # 네비게이션 버튼 (한글)
         [[languages.ko.params.profileMode.buttons]]
@@ -98,7 +98,7 @@ defaultContentLanguage = 'en'
 
     [[languages.ko.params.socialIcons]]
         name = "github"
-        url = "https://github.com/Hongyoosung"
+        url = "https://github.com/yoosunghong"
     [[languages.ko.params.socialIcons]]
         name = "linkedin"
         url = "https://linkedin.com/in/your-id"

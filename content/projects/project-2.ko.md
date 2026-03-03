@@ -7,7 +7,7 @@ translationKey: "project-gobt"
 duration: "2023.05 ~ 2024.02"
 team_size: "2명"
 role: "메인 프로그래머, 논문 작성"
-github: "https://github.com/Hongyoosung/GOBTv2.0"
+github: "https://github.com/yoosunghong/GOBTv2.0"
 paper: "https://doi.org/10.33851/JMIS.2023.10.4.321"
 math: true
 ---

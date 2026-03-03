@@ -7,7 +7,6 @@ translationKey: "project-v"
 duration: "2023.09 ~ 2024.05"
 team_size: "3 people"
 role: "AI system programmer"
-github: "https://github.com/Hongyoosung/GOBT"
 youtube: "https://www.youtube.com/watch?v=Dl0W6wjeUj0"
 math: true
 ---

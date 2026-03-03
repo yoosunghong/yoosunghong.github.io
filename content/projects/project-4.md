@@ -7,7 +7,7 @@ translationKey: "project-4"
 duration: "2022.10 ~ 2023.12"
 team_size: "1 people"
 role: "Main programmer, paper writer"
-github: "https://github.com/Hongyoosung/Metaverse_for_IoT/tree/main/Decentralized_MQTT"
+github: "https://github.com/yoosunghong/Metaverse_for_IoT/tree/main/Decentralized_MQTT"
 paper: "https://kism.or.kr/file/memoir/13_4_8.pdf"
 math: true
 ---
