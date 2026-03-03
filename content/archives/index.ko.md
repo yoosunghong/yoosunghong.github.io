@@ -12,6 +12,6 @@ hideMeta: true
 
 
 <div class="notion-button-wrapper">
-<a href="https://hyss.notion.site/Yoosung-Archive-df9b2433b8be4b72858ab7764632862f" target="_blank" class="notion-button">Go To Notion</a>
+<a href="https://yoosunghong.notion.site" target="_blank" class="notion-button">Go To Notion</a>
 </div>
 </div>
