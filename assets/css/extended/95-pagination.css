@@ -1,0 +1,79 @@
+/* ---------------------------------------------------------
+   95. Pagination Styles
+   --------------------------------------------------------- */
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin: 60px 0 40px;
+    font-family: var(--font-serif);
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+    gap: 12px;
+}
+
+.pagination-item {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.pagination-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    color: #888888;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.pagination-link:hover {
+    color: var(--color-text-title, #000000);
+}
+
+.pagination-link.active {
+    color: var(--color-text-title, #000000);
+    font-weight: bold;
+    pointer-events: none;
+}
+
+/* Arrow buttons styling */
+.pagination-link[aria-label="Previous"],
+.pagination-link[aria-label="Next"] {
+    font-size: 1.1rem;
+    color: #888888;
+}
+
+.pagination-link[aria-label="Previous"]:hover,
+.pagination-link[aria-label="Next"]:hover {
+    color: var(--color-text-title, #000000);
+}
+
+/* Responsive adjustment */
+@media screen and (max-width: 768px) {
+    .pagination-container {
+        margin: 40px 0 30px;
+    }
+    
+    .pagination {
+        gap: 8px;
+    }
+    
+    .pagination-link {
+        min-width: 28px;
+        height: 28px;
+        font-size: 0.95rem;
+    }
+}

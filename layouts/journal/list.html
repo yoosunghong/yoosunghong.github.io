@@ -6,9 +6,7 @@
     <div class="journal-controls-wrap">
         <div class="journal-filter-wrap">
             <div class="journal-filter-dropdown-wrap">
-                <button id="filter-toggle"
-                    type="button"
-                    class="journal-filter-btn">
+                <button id="filter-toggle" type="button" class="journal-filter-btn">
                     <span class="journal-filter-icon" aria-hidden="true">☰</span>
                     <span>Filter</span>
                 </button>
@@ -21,7 +19,8 @@
                     </div>
                     <div class="journal-filter-divider"></div>
                     <div class="journal-filter-section">
-                        <button type="button" data-filter-tag class="journal-filter-option journal-filter-option-tag">태그로 찾기</button>
+                        <button type="button" data-filter-tag
+                            class="journal-filter-option journal-filter-option-tag">태그로 찾기</button>
                     </div>
                 </div>
 
@@ -34,34 +33,32 @@
             <input type="text" id="list-search" class="journal-search-input" placeholder="Search" />
         </div>
     </div>
-    
+
     <hr class="journal-divider">
 
     <section class="journal-post-section">
         <div id="post-list" class="post-list-container">
             {{ range $index, $page := .Paginator.Pages }}
-            <article class="post-entry"
-                     data-title="{{ .Title | lower }}" 
-                     data-tags="{{ if .Params.tags }}{{ delimit .Params.tags " " | lower }}{{ end }}"
-                     data-summary="{{ .Summary | plainify | lower }}"
-                     data-date="{{ .Date.Format "20060102150405" }}">
-                
+            <article class="post-entry" data-title="{{ .Title | lower }}"
+                data-tags="{{ if .Params.tags }}{{ delimit .Params.tags " " | lower }}{{ end }}"
+                data-summary="{{ .Summary | plainify | lower }}" data-date="{{ .Date.Format " 20060102150405" }}">
+
                 <a href="{{ .RelPermalink }}" class="post-entry-title">
                     {{ .Title }}
                 </a>
-                
+
                 <p class="post-entry-summary">
                     {{ .Summary | plainify | truncate 130 }}
                 </p>
-                
+
                 <div class="post-entry-meta">
                     {{ if .Params.tags }}
-                        <div class="post-entry-tags">
+                    <div class="post-entry-tags">
                         {{ range .Params.tags }}
-                            <span class="post-entry-tag">#{{ . }}</span>
+                        <span class="post-entry-tag">#{{ . }}</span>
                         {{ end }}
-                        </div>
-                        <span class="separator">|</span>
+                    </div>
+                    <span class="separator">|</span>
                     {{ end }}
                     <span class="post-entry-date">{{ .Date.Format "2006. 01. 02" }}</span>
                 </div>
@@ -70,8 +67,34 @@
         </div>
     </section>
 
+    {{ if gt .Paginator.TotalPages 1 }}
+    <nav class="pagination-container">
+        <ul class="pagination">
+            {{ if .Paginator.HasPrev }}
+            <li class="pagination-item">
+                <a class="pagination-link" href="{{ .Paginator.Prev.URL }}" aria-label="Previous">〈</a>
+            </li>
+            {{ end }}
+
+            {{ range .Paginator.Pagers }}
+            <li class="pagination-item">
+                <a class="pagination-link{{ if eq . $.Paginator }} active{{ end }}" href="{{ .URL }}">
+                    {{ .PageNumber }}
+                </a>
+            </li>
+            {{ end }}
+
+            {{ if .Paginator.HasNext }}
+            <li class="pagination-item">
+                <a class="pagination-link" href="{{ .Paginator.Next.URL }}" aria-label="Next">〉</a>
+            </li>
+            {{ end }}
+        </ul>
+    </nav>
+    {{ end }}
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const searchInput = document.getElementById('list-search');
             const postsContainer = document.getElementById('post-list');
             const posts = document.querySelectorAll('.post-entry');
@@ -144,7 +167,7 @@
                     '<button type="button" class="journal-tag-chip" data-tag="' + escapeAttr(tag) + '">#' + escapeHtml(tag) + '</button>'
                 ).join('');
                 tagListEl.querySelectorAll('.journal-tag-chip').forEach(btn => {
-                    btn.addEventListener('click', function() {
+                    btn.addEventListener('click', function () {
                         const tag = this.getAttribute('data-tag');
                         if (searchInput) {
                             searchInput.value = tag;
@@ -172,7 +195,7 @@
                 filterPosts(searchQuery);
             }
             if (searchInput) {
-                searchInput.addEventListener('input', function(e) {
+                searchInput.addEventListener('input', function (e) {
                     filterPosts(e.target.value);
                 });
             }
