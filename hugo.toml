@@ -2,7 +2,9 @@ baseURL = "https://yoosunghong.github.io/"
 title = "Yoosung's Dev Log"
 theme = "PaperMod"
 defaultContentLanguage = 'en'
-paginate = 8
+
+[pagination]
+    paginate = 8
 
 # -------------------------------------------------------------------------
 # Core Params
