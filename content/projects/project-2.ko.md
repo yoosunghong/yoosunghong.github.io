@@ -14,7 +14,7 @@ math: true
 
 ---
 
-## 개요
+## 개요 (Overview)
 
 본 프로젝트는 행동 트리(BT)의 구조적 명확성과 목적 지향 액션 플래닝(GOAP)의 상황 적응성을 융합한 Unity 기반 **계층형 AI 프레임워크** 입니다. 표준 BT 내에 GOAP과 유틸리티 이론을 접목한 커스텀 알고리즘 노드를 통합함으로써, 기존 NPC AI의 정적인 의사결정 한계를 극복하고자 했습니다. 상위 수준의 흐름 제어는 BT가 담당하고, 복잡한 상황 판단은 커스텀 노드에 위임하는 계층적 설계를 통해 연산 효율성과 개발 편의성을 동시에 확보했습니다.
 
@@ -27,7 +27,7 @@ math: true
 
 ---
 
-## 기술 스택
+## 기술 스택 (Teck Stak)
 
 | Category | Technologies |
 |---|---|
@@ -39,7 +39,7 @@ math: true
 
 ---
 
-## 주요 기능
+## 주요 기능 (Key Features)
 
 ### 1. 플래너 노드를 통한 데이터 주도형 상태 전이
 * **Enum 비트마스크 기반 월드 상태 표현**: 에이전트 상태와 환경 데이터를 Enum 기반 비트마스크로 인코딩했습니다. HasWeapon, LowHealth 등의 조건을 비트 플래그로 관리하여, 조건 일치 여부를 문자열 비교나 딕셔너리 조회 없이 빠른 비트 연산(AND/OR)만으로 판별합니다. WorldState 구조체는 불변 값 타입(Immutable Value Type)으로 설계되어 비교 시 힙 할당(Heap Allocation)이 발생하지 않도록 했습니다.
@@ -136,7 +136,7 @@ public abstract class GOBTEvaluatorSO : ScriptableObject
 
 ---
 
-## 주요 기술적 난제 및 해결 전략
+## 기술적 난제 및 해결 전략 (Problem Solbing)
 
 ### 1. 다중 에이전트 연산 병목 해결 (Time-slicing)
 * **Issue**: 수십 명의 에이전트가 동시에 그래프를 구축할 때 발생하는 CPU Spike 현상 확인.
@@ -279,7 +279,7 @@ _nodePool.ReturnAll(_allRented);
 
 ---
 
-## 결과
+## 결과 (Results)
 
 * [**Journal of Multimedia Information System (JMIS)** 2023년 10월호 4권 'GOBT: A Synergistic Approach to Game AI Using Goal-Oriented and Utility-Based Planning in Behavior Trees'](https://doi.org/10.33851/JMIS.2023.10.4.321) 제 1저자 투고 및 출판 완료.
 * **역할**: 메인 프로그래머, 논문 작성

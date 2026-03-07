@@ -28,14 +28,16 @@ html.dark {
     position: fixed;
     top: 20vh; 
     right: 30px; 
-    height: 60vh;
+    
+    /* 기존: height: 60vh; 삭제 */
+    max-height: 60vh; /* 추가: 최대 크기를 60vh로 제한하여 내용물만큼만 늘어나게 설정 */
+    
     width: var(--toc-width-collapsed);
     background: transparent;
     z-index: 50;
     transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
                 background 0.4s ease, 
                 box-shadow 0.4s ease;
-    /* 수정 1: 벽에서 떨어졌으므로 4면 모두 둥글게 처리 */
     border-radius: 16px; 
     overflow: hidden;
     backdrop-filter: blur(8px);
@@ -44,7 +46,6 @@ html.dark {
 .toc-sidebar:hover {
     width: var(--toc-width-expanded);
     background: var(--toc-bg);
-    /* 그림자의 방향을 플로팅 박스에 맞게 은은하게 사방으로 퍼지도록 수정 */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); 
     border: 1px solid var(--toc-border);
 }
@@ -54,7 +55,9 @@ html.dark {
 /* --- TOC 내부 스크롤 영역 --- */
 .toc-wrapper {
     width: var(--toc-width-expanded);
-    height: 100%;
+
+    max-height: 60vh; 
+    
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;

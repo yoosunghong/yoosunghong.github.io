@@ -1,13 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
     const content = document.querySelector('.content');
     const tocList = document.getElementById('toc-list');
+    const tocSidebar = document.getElementById('toc-sidebar'); // 추가: 사이드바 요소 찾기
     
     // .content 요소나 toc-list가 없으면 실행 중단
     if (!content || !tocList) return;
 
     // 문서 내 h1, h2, h3 헤딩 태그 모두 찾기
     const headings = content.querySelectorAll('h1, h2, h3');
-    if (headings.length === 0) return;
+    if (headings.length === 0) {
+        if (tocSidebar) tocSidebar.style.display = 'none'; 
+        return;
+    }
 
     // 1. 목차 요소 자동 생성
     headings.forEach((heading, index) => {

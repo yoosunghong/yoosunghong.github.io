@@ -30,9 +30,9 @@
     <article class="project-article w-full opacity-0 animate-fade-in-up-delay-1 max-w-none">
         
         <header class="project-header text-center">
-            <h1 class="project-title font-serif font-bold">{{ .Title }}</h1>
+            <h1 class="project-title font-serif font-bold">{{ .Title | safeHTML }}</h1>
             {{ if .Params.description }}
-            <p class="project-description text-text-muted font-sans mt-0">{{ .Params.description }}</p>
+            <p class="project-description text-text-muted font-sans mt-0">{{ .Params.description | safeHTML }}</p>
             {{ end }}
 
             <div class="project-meta-container">

@@ -1,6 +1,7 @@
 ---
-title: "UE5 & AWS 기반 대규모 분산 멀티 에이전트 강화학습"
-description: "Ray RLlib과 Schola를 활용하여 5vs5 전술 AI 에이전트를 학습시킨 클라우드 기반 병렬 강화학습 파이프라인"
+title: "Dynamic EQS: <br> RL 기반의 UE5 전략적  포지셔닝 최적화 시스템"
+description: "RL 모델을 통한 EQS 가중치 동적 최적화 및 Schola와 Ray RLlib을 활용한 AWS 클라우드 기반 병렬 강화학습 파이프라인 구축"
+
 weight: 1
 translationKey: "project-1"
 duration: "2025.08 ~ 2026.03"
@@ -12,23 +13,28 @@ math: true
 
 ---
 
-## 개요
+## 개요 (Overview)
 
-본 프로젝트는 Unreal Engine 5 환경에서 5 vs 5 팀 거점 경쟁 에이전트 전투 환경을 타겟으로 합니다.
+본 프로젝트는 Unreal Engine 5 환경에서 5 vs 5 팀 기반 거점 점령전을 위한 전략적 포지셔닝 최적화를 목표로 합니다.
 
-에이전트에게 3가지 전술적 역할(돌격, 방어, 지원)을 부여하고, 각 에이전트는 독립된 강화학습(RL) 정책 네트워크를 통해 최적의 공간 이동 파라미터(EQS 가중치)를 추론합니다.
+각 에이전트는 전략별로 분리된 강화학습(RL) 정책 네트워크와 **통합 EQS(Environment Query System)** 를 결합하여, 실시간 상황에 최적화된 공간 이동 파라미터를 추론합니다.
 
-특히, Schola 플러그인을 브릿지로 삼아 AWS 클라우드 인프라 상에서 Ray RLlib 기반의 대규모 병렬 학습 환경을 구축하여, 수십 개의 언리얼 엔진 인스턴스를 통해 동시에 데이터를 수집하고 정책을 업데이트하는 고성능 파이프라인을 완성했습니다.
-
----
-
-## System Architecture Overview
-
-
+특히, Schola 플러그인을 브릿지로 활용하여 AWS 클라우드 기반의 Ray RLlib 대규모 병렬 학습 환경을 구축했습니다. 이를 통해 수십 개의 언리얼 엔진 인스턴스로부터 데이터를 동시 수집하고 정책을 업데이트하는 고성능 학습 파이프라인을 구현했습니다.
 
 ---
 
-## Tech Stack
+## 시스템 아키텍처 (System Architecture)
+
+
+{{< img src="/images/project1/archi.png" 
+        alt="" 
+        class="max-w-full" 
+        caption="Fig 1. 시스템 아키텍처 및 계층적 포지셔닝 워크플로우" >}}
+
+
+---
+
+## 기술 스택 (Tech Stack)
 
 | Category | Technologies |
 |---|---|
@@ -36,89 +42,18 @@ math: true
 | **RL Framework** | Ray RLlib 2.7, PyTorch |
 | **UE5-Python Bridge** | Schola Plugin (gRPC-based) |
 | **Neural Network Inference** | ONNX Runtime via UE5 NNE (Neural Network Engine) |
-| **Containerization** | Docker (Linux training containers) |
-| Cloud & Container	| AWS EC2 / EKS, Docker (Linux training containers)
+| **Cloud & Infra** | AWS (EC2, EKS), Docker (Linux) |
 | **Communication** | gRPC (Schola protocol) |
 | **Monitoring** | TensorBoard |
 
 
 ---
 
-### Decision Flow
 
-```
-Global Game State 
-    │
-    ▼
-┌─────────────────────────────────────────────┐
-│ Layer 1: Squad Commander (Team World Model) │
-│ Output: 에이전트별 전술 역할 할당 (돌격/방어/지원)│
-└─────────────────────────────────────────────┘
-    │ Role Assignment (Strategy)
-    ▼
-┌─────────────────────────────────────────────┐
-│ Layer 2: Executor Agents (×5 Multi-Agent)   │
-│ ┌─────────────────────────────────────────┐ │
-│ │ Independent PPO Policy (역할별 개별 네트워크) │ │
-│ │ Input: 51-dim (48D Obs + 3D One-hot)    │ │
-│ │ Output: 6-dim EQS weights [-1,1]        │ │
-│ └─────────────────────────────────────────┘ │
-└─────────────────────────────────────────────┘
-    │ 6-dim Parameter Action
-    ▼
-┌─────────────────────────────────────────────┐
-│ Layer 3: EQS Spatial Reasoning (UE5)        │
-│ 48 candidate positions × 8 weighted tests   │
-│ Output: 최적의 전술적 위치 도출 → NavMesh 이동 │
-└─────────────────────────────────────────────┘
-```
+## 주요 기능 (Key Features)
 
 
-(squad commander는 협동 전략의 발견을 위해 하나의 전략에 너무 많은 데이터가 학습되지 않게 하기 위하여 전략을 골고루 분배하여 각 33%의 데이터만 학습되게 하였습니다. RL 정책은 순간의 관찰 결과를 바탕으로 공간적 선호도로 매핑합니다. EQS는 이러한 선호도를 기반으로 메시 상의 구체적인 유효 위치로 변환합니다. 이러한 분리를 통해 ~~ 등등)
-
----
-
-
-## 관측 공간 및 전략별 보상 설계
-
-
-### 관측 공간
-
-| 데이터 구분 | 세부 항목 | | 설명 및 처리 방식 | 차원 |
-| --- | --- | --- | --- | --- |
-| **Self** | 위치, 체력, 속도 | 정규화된 맵 위치 및 에이전트의 현재 상태 | 7 |
-| **Allies** | 상대 위치, 체력 | 최대 4명. 거리/시야 정규화 | 16 |
-| **Enemies** | 적군 상대 위치, 시야 플래그 | 시권(Line of Sight) 내 적만 유효 좌표 제공 | | 20
-| **Map** | 5개 거점 소유권 | 아군(+1), 중립(0), 적군(-1) 상태 플래그 | 5 |
-| **Strategy** | 현재 부여된 전술 역할 | 돌격/방어/지원 |  One-hot 인코딩 벡터 | 3 |
-| **합계** | | | | 51 |
-
-
-### 보상 설계
-
-단일 보상 체계에서 발생하는 그래디언트 간섭(Gradient Interference)을 막기 위해, 역할별 독립 네트워크를 구성하고 각 목표에 맞는 조밀한(Dense) 보상과 희소(Sparse) 보상을 설계했습니다.
-
-**돌격 (Assault)**:
-- **목표**: 적 거점 탈취 및 전선 푸시.
-- **보상**: 중립, 적 거점 접근에 대한 스칼라 거리 보상, 비아군 구역 점유 및 캡처 진행률 기반 능동 보상, 점령 후 지속적인 전진을 유도하는 모멘텀 보너스 부여.
-
-
-**방어(Defend)**:
-- **목표**: 아군 거점 유지 및 적의 진입 차단.
-- **보상**: 아군 거점 내 체류 시 기본 보상, 적이 거점을 위협할 때 거점 내부에 위치 시 추가 보상, 거점 내에서 적의 데미지를 흡수할 시 주어지는 내구도 보너스.
-
-**지원(Support)**:
-- **목표**: 아군 생존율 증가 및 후방 유지.
-- **보상**: 체력이 낮은 아군을 추적하고 힐링을 틱 단위로 보상, 아군보다 뒤편에 위치하는 후방 포지셔닝 보너스, 아군이 부상 중인데 적을 처치할 경우 부여하는 역할 이탈 패널티.
-
-
----
-
-
-## 핵심 기능 (Key Features)
-
-
-### 1. 협동 전략 RL과 EQS 통합 로직 (Actuator Transformation)
+### 1. RL & EQS 통합 로직 (Actuator Transformation)
 강화학습 모델이 에이전트를 직접 움직이는 대신, 가중치(Weights) 를 출력하면 UE5의 환경 쿼리 시스템(EQS)이 이를 바탕으로 물리적 공간을 해석합니다.
 
 RL 정책의 출력 공간은 Box([-1, 1]^6)이며, TacticalParameterActuator를 통해 다음 6개의 공간적 의미로 매핑됩니다.
@@ -132,10 +67,8 @@ RL 정책의 출력 공간은 Box([-1, 1]^6)이며, TacticalParameterActuator를
 | **AllyProximity** | 아군과의 진형 유지 선호도 |
 | **CombatRange** | 최적의 무기 사거리 유지 선호도 |
 
----
 
-
-RL 정책의 출력 -> UE5 액추에이터 변환 로직
+**RL 정책의 출력 -> UE5 액추에이터 변환 로직**
 
 ```C++
 // Schola Actuator가 Python의 Action Tensor를 UE5 EQS 파라미터로 디코딩
@@ -163,81 +96,330 @@ void UTacticalParameterActuator::TakeAction(const FBoxPoint& Action)
 }
 ```
 
-이러한 Decoupling 아키텍처 덕분에 RL은 '어떤 전술이 유리한가(가중치)'라는 추상적 의사결정에 집중할 수 있었고, 복잡한 3D 환경에서의 물리적 충돌 처리나 경로 탐색 비용을 획기적으로 낮췄습니다.
+이러한 아키텍처로 RL은 '어떤 전술이 유리한가(가중치)'라는 추상적 의사결정에 집중할 수 있었고, 복잡한 3D 환경에서의 물리적 충돌 처리나 경로 탐색 비용을 획기적으로 낮췄습니다.
 
 
 
+---
 
-### 1. 분산 다중 에이전트 강화학습 (MARL)
 
-각 에이전트는 할당된 전략에 따라 독립적인 PPO 학습 정책을 실행합니다. 역할별(돌격, 방어, 지원) 목표 차이로 인한 그래디언트 간섭을 제거하기 위해 공유 모델 대신 **3개의 독립된 정책 네트워크**를 사용하는 아키텍처를 채택했습니다.
+### 2. 관측 공간 및 전략 조건부 보상 설계 (Strategy-Conditioned Reward Shaping)
+
+> **관측 공간**
+
+| 데이터 구분 | 세부 항목 | | 설명 및 처리 방식 | 차원 |
+| --- | --- | --- | --- | --- |
+| **Self** | 위치, 체력, 속도 | 정규화된 맵 위치 및 에이전트의 현재 상태 | 7 |
+| **Allies** | 상대 위치, 체력 | 최대 4명. 거리/시야 정규화 | 16 |
+| **Enemies** | 적군 상대 위치, 시야 플래그 | 시권(Line of Sight) 내 적만 유효 좌표 제공 | | 20
+| **Map** | 5개 거점 소유권 | 아군(+1), 중립(0), 적군(-1) 상태 플래그 | 5 |
+| **Strategy** | 현재 부여된 전술 역할 | 돌격/방어/지원 |  One-hot 인코딩 벡터 | 3 |
+| **합계** | | | | 51 |
+
 
 <br>
 
-#### **네트워크 아키텍처 구성도**
+> **보상 구조 개요**
 
-| 구분 | 레이어 (Layer) | 구성 요소 및 활성화 함수 | 출력 차원 (Output Dim) | 비고 |
-| --- | --- | --- | --- | --- |
-| **Input** | **Input Data** | 로컬 관측(49D) + 전략(3D) | **52** | 원-핫 인코딩 포함 |
-| **Encoder** | **Linear 1** | Linear + ReLU + LayerNorm | 256 | 특징 추출 시작 |
-| **Encoder** | **Linear 2** | Linear + ReLU + LayerNorm | **256** | 공통 임베딩 벡터 |
-| **Head 1** | **Action Head** | Linear + Tanh (추정) | **6** | EQS 가중치 (범위: [-1, 1]) |
-| **Head 2** | **Value Head** | Linear | **1** | 상태 가치 $V(s)$ |
+단일 보상 함수로 세 가지 역할을 동시에 학습시키면 그래디언트 간섭(Gradient Interference)이 발생합니다. 한 역할에 유리한 업데이트가 다른 역할의 정책을 손상시키기 때문입니다. 이를 해결하기 위해, 역할별로 완전히 독립된 정책 네트워크와 전술 목표에 특화된 조밀(Dense) + 희소(Sparse) 보상 함수 조합을 설계했습니다.
+
+모든 전략에 공통으로 적용되는 베이스라인 보상 위에, 역할별 전술 목표에 맞춘 밀도 보상(Dense)이 매 스텝마다 계산됩니다. 킬/점령 등 이산 이벤트는 희소 보상(Sparse)으로 별도 누적되어 스텝 종료 시 함께 드레인됩니다.
+
+```cpp
+// DERewardSubsystem.cpp — 전략별 스케일 분기 구조
+float UDERewardSubsystem::GetStrategyScale(
+    EDEStrategyType Strategy,
+    float AssaultScale, float DefendScale, float SupportScale) const
+{
+    switch (Strategy)
+    {
+    case EDEStrategyType::Assault: return AssaultScale;
+    case EDEStrategyType::Defend:  return DefendScale;
+    case EDEStrategyType::Support: return SupportScale;
+    }
+}
+```
+
+킬·사망·점령 등 모든 이벤트 보상은 이 스케일을 통해 역할마다 다른 가중치로 적용됩니다. 예를 들어 킬 보상은 돌격에 높고 지원에 낮으며, 사망 패널티는 방어에 더 크게 부과됩니다.
+
+
+
+
+---
+
+**돌격 (Assault)**
+
+목표는 적 거점 접근과 점령 완료입니다. 적 거점까지의 거리 감소분에 비례한 접근 보상을 매 스텝 부여하고, 거점 반경 내 진입 시 추가 존재 보너스를 부여합니다. 점령이 완료되면 즉시 `PostCaptureMomentumDuration` 스텝 동안 모멘텀 보너스가 활성화되어, 점령 후 제자리에 머무는 대신 다음 거점으로 계속 전진하도록 유도합니다.
+
+```cpp
+// 점령 완료 → 모멘텀 활성화
+if (NewCaptures > 0)
+    InOutState.PostCaptureMomentumStepsRemaining = Settings->AssaultReward.PostCaptureMomentumDuration;
+
+// 모멘텀 기간 중 이동 + 점령 거점에서 벗어난 경우 보너스 부여
+if (InOutState.PostCaptureMomentumStepsRemaining > 0)
+{
+    InOutState.PostCaptureMomentumStepsRemaining--;
+    if (PositionChange >= Settings->AssaultReward.PostCaptureMomentumMinMove &&
+        FVector::DistSquared(Current.Position, InOutState.LastCapturedPointLocation) > CaptureRadiusSq)
+    {
+        Reward += Settings->AssaultReward.PostCaptureMomentumBonus;
+    }
+}
+
+// 비전투 구역에서 정지 시 패널티
+if (PositionChange < Settings->AssaultIdleMovementThreshold && !bInNonFriendlyZone)
+    Reward -= IdlePenalty;
+```
+
+---
+
+**방어 (Defend)**
+
+목표는 아군 거점 유지와 거점 내 적 격퇴입니다. 아군 거점 반경 내에 위치할 때 기본 존재 보상이 부여됩니다. 거점 내에서 적에게 데미지를 받으면 추가 내구도 보너스(`ZoneDurabilityBonus`)가 지급되어, 거점에서 물러나지 않고 버티는 행동을 강화합니다. 아군 거점이 없는 상황에서는 중립/적 거점 접근으로 목표가 전환됩니다.
+
+```cpp
+// 거점 내 위치 시 기본 보상 + 체력·정지 보너스
+if (InOutState.bInFriendlyZone)
+{
+    Reward += Settings->DefendReward.ZonePresenceBonus;
+    if (PositionChange < Settings->DefendStationaryThreshold) Reward += Settings->DefendReward.PositionReward;
+    if (Current.Health > Settings->DefendHealthThreshold)     Reward += Settings->DefendReward.HealthBonus;
+
+    // 거점 내 적이 탐지된 경우 위협 대응 보너스
+    // (적이 거점 반경 내에 있을 때 내가 거점 안에 있으면 추가 보상)
+    Reward += Settings->DefendReward.ThreatResponseBonus; // 조건 충족 시
+
+    // 거점 내에서 데미지를 흡수한 경우 내구도 보너스
+    const float DamageTaken = Prev.Health - Current.Health;
+    if (DamageTaken > 0.0f)
+        Reward += Settings->DefendReward.ZoneDurabilityBonus * DamageTaken;
+}
+// 거점 외부에 있는 경우 거리에 비례한 패널티
+else
+{
+    const float DistPenalty = FMath::Min(CurrNearestFriendlyDist / 10000.0f, 1.0f) * 0.3f;
+    Reward -= DistPenalty;
+}
+```
+
+---
+
+**지원 (Support)**
+
+목표는 체력이 낮은 아군을 추적하고 힐링하며 후방을 유지하는 것입니다. 매 스텝 부상 아군 탐색을 수행하되, 잦은 타겟 전환으로 인한 진동 행동을 막기 위해 5스텝 캐시를 적용합니다. 캐시된 아군이 현재 가장 낮은 체력이 아니더라도 5스텝이 지나기 전까지는 교체하지 않습니다. 아군 뒤편에 위치하면 후방 포지셔닝 보너스를 받으며, 아군이 부상 중인 상황에서 직접 킬을 시도하면 역할 이탈 패널티가 부과됩니다.
+
+```cpp
+// 5-step 캐시: 타겟 아군 교체를 억제하여 안정적 추적 유도
+bool bShouldReevalTarget =
+    (InOutState.CachedInjuredAllyIdx < 0) ||
+    (InOutState.InjuredAllyStalenessCounter >= 5) || // 5스텝마다 재평가
+    (/*캐시된 아군이 사망한 경우*/);
+
+if (bShouldReevalTarget)
+{
+    // 생존 아군 중 체력이 가장 낮은 대상을 새 타겟으로 지정
+    InOutState.CachedInjuredAllyIdx = NewInjuredIdx;
+    InOutState.InjuredAllyStalenessCounter = 0;
+}
+
+// 타겟 아군에 접근할수록 매 스텝 보상 누적
+Reward += Settings->SupportReward.AllyApproachReward * FMath::Max(ApproachDelta, 0.0f);
+
+// 아군이 부상 중인데 킬을 시도한 경우 역할 이탈 패널티
+if (InOutState.bSparseKillFiredThisStep && bAllyInjured)
+    Reward -= Settings->SupportReward.RoleBreakPenalty;
+
+// 아군보다 적에서 먼 위치를 유지하는 경우 후방 포지셔닝 보너스
+if (NearestEnemyDist > NearestAllyToEnemyDist)
+    Reward += Settings->SupportReward.RearGuardBonus;
+```
+
+---
+
+**독립 정책 네트워크와 전략 균형 리플레이 버퍼**
+
+공유 인코더 + 멀티헤드 구조에서는 Support 헤드가 학습 초기에 붕괴하는 그래디언트 간섭 문제가 반복됐습니다. 이를 해결하기 위해 전략별 완전 독립 단일 헤드 정책으로 전환했습니다.
+
+```python
+# phase1_policy_training_v10_2.py — 전략별 독립 정책 등록
+config = config.multi_agent(
+    policies={
+        "assault_policy": PolicySpec(),   # 독립 인코더 + 단일 헤드
+        "defend_policy":  PolicySpec(),
+        "support_policy": PolicySpec(),
+    },
+    policy_mapping_fn=_strategy_policy_mapping_fn,  # 에이전트 전략 → 정책 라우팅
+)
+```
+
+세 전략이 동시에 존재하는 학습 환경에서 한 전략 데이터가 과다 수집되어 편향이 생기는 것을 막기 위해, 전략별로 독립된 서브 버퍼를 두고 샘플링 시 33/33/33% 균등 분배를 강제하는 `StrategyBalancedReplayBuffer`를 구현했습니다.
+
+```python
+class StrategyBalancedReplayBuffer:
+    def __init__(self, capacity: int = 100000):
+        # 전략별(Assault/Defend/Support) 독립 서브 버퍼
+        self.buffers = {
+            strategy: deque(maxlen=capacity // 3)
+            for strategy in range(3)
+        }
+
+    def sample(self, batch_size: int) -> List[Transition]:
+        """각 전략 버퍼에서 균등하게 샘플링 (33/33/33%)."""
+        samples_per_strategy = batch_size // 3
+        batch = []
+        for strategy in range(3):
+            buffer = self.buffers[strategy]
+            indices = np.random.choice(len(buffer), samples_per_strategy, replace=False)
+            batch.extend([buffer[i] for i in indices])
+        np.random.shuffle(batch)
+        return batch
+```
+
+관측 공간에 아군의 전략 분포(팀 구성비)도 포함하여, 에이전트가 팀 내 전략 조합을 인식하고 협동 행동을 발견할 수 있도록 유도했습니다.
 
 ---
 
 
 
-#### 전략 조건부 보상 설계 (Strategy-Conditioned Reward Shaping)
-각 역할의 전술적 목표에 맞춤화된 보상 함수를 적용했습니다.
+### 3. AWS 클라우드 상의 병렬 학습을 위한 컨테이너화 및 환경 매니징 시스템
 
-* **돌격 (Assault):** 적 점령지 접근, 점령 진행도, 점령 후 추진력에 보상. 전투 지역 외 대기 시 패널티.
-* **방어 (Defend):** 아군 점령지 내 근접 보너스, 대미지 흡수를 통한 거점 유지 보상. 구역 이탈 시 거리 패널티.
-* **지원 (Support):** 부상당한 아군 추적 보상(급격한 타겟 변경 방지를 위해 5-step 캐시 적용). 힐링량, 후방 위치 선정, 아군 방치 후 교전 시 패널티.
+대규모 병렬 강화학습을 안정적으로 구동하기 위해, Python 학습 환경 전체를 Linux Docker 컨테이너로 패키징하고 AWS EC2 위에서 여러 UE5 인스턴스와 동시에 연결되는 파이프라인을 구축했습니다.
 
-**학습 인프라:**
+#### 컨테이너화 전략
 
-* Ray RLlib을 이용한 멀티 에이전트 설정 및 `policy_mapping_fn`을 통한 전략별 라우팅
-* 전략별 데이터 균형을 위한 리플레이 버퍼(33/33/33% 분포 유지)
-* UE5 NNE(Neural Network Engine)를 통한 ONNX 모델 추론
+Python 학습 스크립트(Ray RLlib, Schola 등 의존성 포함)를 Linux 컨테이너 이미지로 빌드합니다. Windows 환경에서 Ray의 멀티프로세스 생성 방식(`spawn`/`fork`)이 충돌하던 문제를 Linux 컨테이너로 전환하면서 원천적으로 해결했습니다. 패키징된 UE5 빌드는 별도 Linux 인스턴스에서 실행되며 컨테이너와 gRPC로 통신합니다.
 
----
+#### 동적 포트 라우팅
 
-### 2. EQS 기반 공간 추론
+각 RLlib env-runner가 독립된 UE5 인스턴스에 연결되도록, 워커 인덱스 기반의 포트 자동 배정 로직을 구현했습니다.
 
-환경 쿼리 시스템(EQS)은 추상적인 RL 출력을 실제 물리적 위치로 변환합니다. EQS 실행기(`UMocEQSExecutor`)는 RL 정책이 출력한 6차원 가중치 벡터를 받아, 내비게이션 메쉬에서 샘플링된 48개 후보 지점에 대해 8개의 가중치 스코어링 테스트를 수행합니다.
+```python
+# moc_v10_2_env.py — 워커별 포트 자동 배정
+def _resolve_port(self, **kwargs):
+    """멀티 워커 RLlib 환경에서 포트를 자동으로 배정."""
+    base_port = kwargs.get("base_port")
+    if base_port is not None:
+        from ray.rllib.evaluation.rollout_worker import get_global_worker
+        worker = get_global_worker()
+        worker_index = worker.worker_index if worker else 0
+        return base_port + max(0, worker_index - 1)
+    return base_port
+```
 
-**6가지 EQS 가중치 차원:**
-| 인덱스 | 파라미터 | 전술적 의미 |
-|---|---|---|
-| 0 | 적 거점 근접도 | 적군 점령지 근처 위치 선호도 |
-| 1 | 아군 거점 근접도 | 아군 점령지 근처 위치 선호도 |
-| 2 | 엄폐 밀도 | 주변 엄폐물이 많은 지형 선호도 |
-| 3 | 적 가시성 | 적의 시야 노출 여부 선호도 |
-| 4 | 아군 근접도 | 팀원과의 거리 유지 선호도 |
-| 5 | 교전 거리 | 선호하는 교전 사거리 유지 |
+RLlib이 여러 env-runner를 생성할 때, 각 워커는 `base_port + worker_index` 방식으로 고유한 포트를 할당받아 서로 다른 UE5 인스턴스에 독립적으로 연결됩니다.
 
-이러한 **디커플링(Decoupling)** 을 통해 RL 정책은 '어떤 공간적 특성이 중요한지'를 학습하고, 실제 경로 탐색, 장애물 회피 등의 물리적 처리는 언리얼 엔진의 내비게이션 시스템이 담당하여 학습의 효율성을 향상시킵니다.
+#### 환경 변수 기반 오케스트레이션
 
+학습 규모와 하이퍼파라미터를 소스 코드 수정 없이 Docker Compose 설정만으로 제어합니다.
 
-### 3. AWS 클라우드 상의 병렬 학습을 위한 컨테이너화
-언리얼을 리눅스 컨테이너화하여 AWS상에서 파이썬 스크립트와 연동. 대규모 병렬 환경 구축. 리소스 절약을 위한 전략 등.
+```python
+# phase1_policy_training_v10_2.py — 환경 변수로 학습 규모 동적 조절
+PORT                  = 50051
+NUM_UE5_ENVIRONMENTS  = int(os.environ.get('NUM_SCHOLA_ENVS', 4))
+NUM_WORKERS           = int(os.environ.get('NUM_WORKERS', 0))
+NUM_ITERATIONS        = int(os.environ.get('NUM_ITERATIONS', 100))
+```
 
+`NUM_SCHOLA_ENVS`와 `NUM_WORKERS`를 Docker Compose의 `environment` 블록에서 지정하면, 코드 변경 없이 UE5 인스턴스 수와 Ray 워커 수를 독립적으로 스케일 아웃할 수 있습니다. 이를 통해 하이퍼파라미터 스윕(Hyperparameter Sweep)도 Docker Compose 파일 수준에서 빠르게 실행할 수 있습니다.
 
 ---
 
 ### 4. 듀얼 모드 아키텍처 (Dual-Mode Architecture)
 
-모든 주요 컴포넌트는 단일 UE5 바이너리 내에서 **학습 모드**와 **추론 모드**를 동시에 지원하도록 설계하여 학습된 모델을 곧바로 실제 서비스 환경에서 테스트할 수 있도록 하였습니다.
+모든 주요 컴포넌트는 단일 UE5 바이너리 내에서 **학습 모드(Training)** 와 **추론 모드(Inference)** 를 동시에 지원하도록 설계했습니다. 학습이 끝난 ONNX 모델을 별도의 빌드 없이 동일한 UE5 환경에서 즉시 실행하고 검증할 수 있습니다.
+
+#### 핵심 설계: `UDEScholaAgent`
+
+에이전트 컴포넌트 `UDEScholaAgent`가 두 모드를 하나의 인터페이스로 추상화합니다. `CurrentMode` 프로퍼티 하나로 행동 파이프라인 전체가 분기됩니다.
+
+```cpp
+// DEScholaAgent.h
+UENUM(BlueprintType)
+enum class EDEAgentMode : uint8
+{
+    Training    UMETA(DisplayName = "Training Mode (Python RLlib)"),
+    Inference   UMETA(DisplayName = "Inference Mode (Local ONNX)")
+};
+
+UCLASS(ClassGroup = (AI), meta = (BlueprintSpawnableComponent))
+class UDEScholaAgent : public UInferenceComponent
+{
+    // Blueprint에서 에디터 단에서 모드를 전환할 수 있음
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MOC")
+    EDEAgentMode CurrentMode = EDEAgentMode::Training;
+    ...
+};
+```
+
+#### 모드별 실행 분기: `PerformTacticalAction()`
+
+EQS 가중치가 결정된 뒤, 실제 이동 명령을 어떻게 처리하는지가 두 모드의 핵심 차이입니다.
+
+```cpp
+// DECharacter.cpp — 모드에 따라 EQS 실행 경로가 분기됨
+void ADECharacter::PerformTacticalAction()
+{
+    bool bIsTraining = ScholaAgent &&
+                       ScholaAgent->CurrentMode == EDEAgentMode::Training;
+
+    if (BB && !bIsTraining)
+    {
+        // 추론 모드: 가중치를 Blackboard에 기록하고, Behavior Tree가 EQS를 실행
+        BB->SetValueAsFloat(TEXT("Weight_EnemyObj"),  CurrentEQSWeights.EnemyObjectiveProximity);
+        BB->SetValueAsFloat(TEXT("Weight_AllyObj"),   CurrentEQSWeights.AllyObjectiveProximity);
+        BB->SetValueAsFloat(TEXT("Weight_Cover"),     CurrentEQSWeights.CoverDensity);
+        BB->SetValueAsFloat(TEXT("Weight_EnemyVis"),  CurrentEQSWeights.EnemyVisibility);
+        BB->SetValueAsFloat(TEXT("Weight_AllyProx"),  CurrentEQSWeights.AllyProximity);
+        BB->SetValueAsFloat(TEXT("Weight_Range"),     CurrentEQSWeights.CombatRange);
+        return;
+    }
+
+    // 학습 모드: EQS를 동기적으로 직접 실행하고 즉시 이동 명령 발행
+    AICtrl->StopMovement();
+    TOptional<FVector> Result = EQSExecutor->ExecuteSynchronousQuery(CurrentEQSWeights);
+    ...
+}
+```
+
+<br>
+
+**학습 모드, 추론 모드 비교 테이블**
+
+| 구분 | 학습 모드 | 추론 모드 |
+|---|---|---|
+| **정책 소스** | Python RLlib (gRPC) | 로컬 ONNX 모델 (UE5 NNE) |
+| **EQS 실행** | C++에서 동기 직접 실행 | Blackboard → Behavior Tree 위임 |
+| **에피소드 관리** | `ADEScholaEnvironment`가 제어 | 불필요 (게임 루프로 동작) |
+| **환경 리셋** | Schola 프로토콜 기반 | 없음 |
+
+<br>
+
+#### 학습 환경 격리: `ADEScholaEnvironment`
+
+학습 모드에서는 `ADEScholaEnvironment`가 에이전트 등록 여부를 `bTrainingMode` 플래그로 제어합니다. 추론 모드로 전환하면 Schola Trainer 등록 전체가 스킵되고 Behavior Tree가 직접 루프를 담당합니다.
+
+```cpp
+// DEScholaEnvironment.cpp
+void ADEScholaEnvironment::RegisterAgents(TArray<APawn*>& OutTrainerControlledPawns)
+{
+    if (!bTrainingMode)
+    {
+        // 추론 모드: Trainer를 등록하지 않음. BT가 직접 에이전트를 구동함.
+        UE_LOG(LogTemp, Warning, TEXT("[ScholaEnv] Inference mode — skipping trainer registration"));
+        return;
+    }
+    // 학습 모드: 각 에이전트에 DETrainer를 배정하고 Schola 스텝 루프에 등록
+    ...
+}
+```
 
 
 
 ---
 
-## 기술적 난제 및 해결 방안
+## 기술적 난제 및 해결 전략 (Problem Solving)
 
-
----
 
 ### Problem 1: UE5 환경과 Rllib 환경의 통신 표준 프레임워크의 필요성
 
@@ -272,50 +454,116 @@ SCHOLA_AVAILABLE = True
 ```
 
 ---
-### Problem 2: 통신 환경 격리 및 Windows 멀티 워커 이슈 해결
+### Problem 2: 학습 환경 병렬화에 따른 환경 불안정 문제
 
-Windows 환경에서 Ray의 멀티 워커 아키텍처를 구동할 때 (1) 가중치 동기화 중 Learner 액터 정지 현상, (2) 단일 UE5 인스턴스 점유로 인한 처리량 제한 문제를 발견했습니다.
-
+Windows 환경에서 Ray의 멀티 워커 아키텍처를 구동할 때 두 가지 문제가 발생했습니다. (1) 가중치 동기화 단계에서 Ray Learner 액터가 멈추는 현상, (2) 단일 UE5 인스턴스에 모든 워커가 연결을 시도하여 처리량이 병목되는 문제였습니다.
 
 #### Goal
-UE5와의 안정적인 통신을 유지하면서 OS 의존성 없는 확장 가능한 멀티 워커 훈련 파이프라인 구축.
+UE5와의 안정적인 통신을 유지하면서, OS 의존성 없이 수평 확장 가능한 멀티 워커 학습 파이프라인 구축.
 
 #### Solution
-* **Docker 컨테이너화**: Python 훈련 스크립트와 Ray RLlib 의존성을 Linux Docker 컨테이너로 패키징하여 Windows 특유의 프로세스 생성(spawn/fork) 호환성 이슈를 원천 차단했습니다.
 
-* **gRPC 포트 라우팅 최적화**: Schola의 연결 구조를 커스텀하여 각 RLlib env-runner가 base_port + worker_index로 고유 포트를 할당받도록 설정, 여러 워커가 독립적인 UE5 인스턴스에 동시 접속하게 했습니다.
+**Docker 컨테이너화**: Python 학습 스크립트와 Ray RLlib 의존성 전체를 Linux Docker 이미지로 패키징했습니다. Windows의 `spawn`/`fork` 프로세스 생성 방식이 Ray와 충돌하던 문제를 컨테이너 레이어에서 원천적으로 차단했습니다.
 
-* **환경 변수 기반 오케스트레이션**: NUM_SCHOLA_ENVS, NUM_WORKERS 등을 환경 변수로 관리하여 소스 코드 수정 없이 Docker Compose 설정만으로 학습 규모와 하이퍼 파라미터를 동적으로 조절하도록 설계했습니다.
+**gRPC 포트 라우팅 최적화**: Schola의 연결 초기화 과정을 커스텀하여, 각 RLlib env-runner가 `base_port + worker_index` 공식으로 고유한 포트를 계산해 서로 다른 UE5 인스턴스에 접속하도록 했습니다.
 
+```python
+# moc_v10_2_env.py — Schola 연결 초기화
+connection = UnrealEditorConnection(url=host, port=port)
+self.schola_env = ScholaEnv(
+    connection,
+    auto_reset_type=AutoResetType.SAME_STEP
+)
+```
+
+각 워커가 계산한 `port`는 `_resolve_port()`에서 `base_port + worker_index`로 결정됩니다. 결과적으로 N개의 워커가 각자 독립된 UE5 인스턴스와 1:1로 통신하는 구조가 완성됩니다.
+
+**환경 변수 기반 오케스트레이션**: `NUM_SCHOLA_ENVS`, `NUM_WORKERS`, `NUM_ITERATIONS` 등을 환경 변수로 관리하여, 소스 코드 수정 없이 Docker Compose 설정만으로 학습 규모와 하이퍼파라미터를 동적으로 제어합니다.
 
 #### Result
-훈련 처리량에 따라 UE5와 Python 인스턴스를 동적으로 확장할 수 있게 되었습니다. Docker 기반 파이프라인 도입으로 로컬 환경 의존성을 완전히 제거했으며, Docker Compose를 통해 신속한 **하이퍼파라미터 스윕(Hyperparameter Sweep)**을 가능하게 하였습니다.
+UE5 인스턴스와 Python 워커를 독립적으로 수평 확장할 수 있는 구조가 완성되었습니다. Docker 기반 파이프라인 도입으로 로컬 환경 의존성을 완전히 제거했으며, Docker Compose 파일 교체만으로 신속한 **하이퍼파라미터 스윕(Hyperparameter Sweep)**을 실행할 수 있게 되었습니다.
 
 ---
 
 ### Problem 3: 멀티 에이전트 에피소드 경계에서의 학습 프리징(정지) 현상
-훈련 도중 에피소드의 경계에서 시스템 멈춤 현상이 발생. 생존한 에이전트는 가중치 업데이트를 받지 못하고 멈췄으며, 사망한 에이전트는 부활/사망의 무한 루프를 돌고 있었습니다.
+
+학습 도중 에피소드가 끝나는 경계 시점에서 시스템 전체가 멈추는 현상이 반복적으로 발생했습니다. 생존한 에이전트는 새로운 가중치 업데이트를 받지 못하고 정지했고, 이미 사망한 에이전트는 '사망 → 자동 부활 → 즉사' 사이클을 무한 반복하고 있었습니다.
 
 #### Goal
-에피소드 경계에서의 프리징 현상 해결.
+에피소드 경계에서의 프리징 현상 해결 및 안정적인 멀티 에이전트 에피소드 종료 구현.
+
+#### 근본 원인 분석: 두 종료 시스템의 충돌
+
+Schola 측(`AutoResetType::SAME_STEP`)과 Python 측(RLlib) 사이에 에피소드 종료 신호가 서로 모순되는 상태였습니다.
+
+- **Schola 측**: 에이전트가 사망하면 `SAME_STEP` 정책에 의해 즉시 자동 리셋을 트리거했습니다.
+- **Python 측**: RLlib은 혼합 궤적(서로 다른 에피소드의 데이터가 한 배치에 섞이는 것)이 생기지 않도록, 모든 에이전트의 종료 신호(`done`)를 억제하고 있었습니다.
+
+결과적으로 사망한 에이전트는 Schola가 부활시키자마자 다시 사망하는 무한 루프에 빠지고, 그 루프가 Schola의 스텝 예산(step budget) 전체를 소비해버렸습니다. 생존한 에이전트들은 스텝 버짓이 고갈된 Schola의 멀티에이전트 동기화 장벽(step barrier)에 막혀 영원히 다음 액션을 받지 못하는 상태가 되었습니다.
+
+```
+[수정 전]
+생존 에이전트 │──────────── 대기 중 (프리징) ────────────────────────────>
+사망 에이전트 │사망→리셋→사망→리셋→사망→리셋→ (스텝 버짓 소진) ─────>
+                                          ↑ 모든 스텝을 여기서 낭비
+
+[수정 후]
+생존 에이전트 │─────────────── 정상 스텝 진행 ──────────── MaxStep → 종료
+사망 에이전트 │사망 → Running 유지 (DEMatchManager 팀 부활 대기) → MaxStep → 종료
+```
 
 #### Solution
 
-* **근본 원인 분석**: 두 개의 충돌하는 에피소드 종료 시스템을 식별했습니다. Schola의 AutoResetType::SAME_STEP은 개별 에이전트 사망 시 자동 리셋을 트리거했으나, Python 측에서는 RLlib에서 혼합 궤적(mixed-trajectory) 배치가 생성되는 것을 방지하기 위해 모든 종료 신호를 억제하고 있었습니다. 이로 인해 사망한 에이전트가 '부활-사망' 무한 루프에 빠져 Schola의 모든 스텝 예산을 소모해 버렸습니다.
+**1. 사망을 에피소드 종료 조건에서 제외 (`ComputeStatus`)**
 
-* **일관된 종료 의미론 적용**: IsEpisodeDone()이 MaxEpisodeSteps에서만 true를 반환하도록 수정했습니다. 이는 사망한 에이전트에 대해 이미 Running 상태를 반환하던 ComputeStatus()와 일관성을 맞춘 것으로, 이를 통해 Schola에서의 자동 리셋 루프를 중단시켰습니다.
+`ADETrainer::ComputeStatus()`에서, 에이전트 사망 시 `Running`을 반환하도록 변경했습니다. 이로써 Schola의 자동 리셋 루프가 차단됩니다.
 
+```cpp
+// DETrainer.cpp — ComputeStatus()
+EAgentTrainingStatus ADETrainer::ComputeStatus()
+{
+    // MaxEpisodeSteps 도달 시에만 에피소드를 종료
+    if (CurrentEpisodeSteps >= MaxEpisodeSteps)
+        return EAgentTrainingStatus::Truncated;
+
+    // 에이전트 사망은 에피소드 종료가 아님.
+    // DEMatchManager가 팀 단위로 리스폰을 처리할 때까지 Running 유지.
+    if (!ControlledCharacter->IsAlive_Implementation())
+        return EAgentTrainingStatus::Running;
+
+    // 매치 종료(시간 초과, 점수 도달)도 종료 조건
+    if (bMatchOver && !bHasNewReward)
+        return EAgentTrainingStatus::Truncated;
+
+    return EAgentTrainingStatus::Running;
+}
+```
+
+**2. 사망한 에이전트의 스텝 배리어 참여 (`Tick` dead-agent drain)**
+
+Schola의 멀티에이전트 스텝 배리어는 **모든** 에이전트가 액션을 소비해야 다음 스텝으로 진행됩니다. 사망한 에이전트가 액션 소비를 건너뛰면 배리어가 영원히 해제되지 않습니다.
+
+사망한 에이전트도 `Tick()`에서 Schola가 보내는 액션을 소비(`ConsumeNewWeights`)하고, 그 횟수를 `CurrentEpisodeSteps`에 반영하도록 했습니다.
+
+```cpp
+// DETrainer.cpp — Tick() 사망 에이전트 처리
+if (!ControlledCharacter->IsAlive_Implementation())
+{
+    // 사망 중에도 Schola의 액션을 소비하여 스텝 배리어를 해제
+    if (ControlledCharacter->ConsumeNewWeights())
+    {
+        bHasNewReward = true;
+        // 사망 에이전트도 MaxEpisodeSteps를 향해 스텝 카운트 진행.
+        // 이 처리가 없으면 사망 에이전트는 MaxEpisodeSteps에 도달하지 못하고,
+        // ComputeStatus()는 영원히 Running을 반환한다.
+        CurrentEpisodeSteps++;
+    }
+    return;
+}
+```
 
 #### Result
-모든 에이전트가 에피소드 경계에서 동시에 종료되어, RLlib 후처리를 위한 깨끗한 단일 궤적 배치를 생성합니다.
-
-[이미지: 프리징 시나리오를 보여주는 타임라인 다이어그램. 두 개의 수평 레인: "생존 에이전트"와 "사망 에이전트". 사망 에이전트 레인은 "사망 → 자동 리셋 → 사망 → 자동 리셋 → ..."의 급격한 사이클로 모든 스텝 예산을 소모하는 반면, 생존 에이전트 레인은 진전 없이 "대기 중..." 상태를 보임. "수정: 사망을 종료 조건에서 제거"라는 라벨이 붙은 화살표가 이 사이클을 끊음. 수정 후 두 레인 모두 "MaxEpisodeSteps → 에피소드 종료"까지 균일하게 진행됨.]
+모든 에이전트(생존/사망 무관)가 `MaxEpisodeSteps`에서 동시에 에피소드를 종료하게 되었습니다. RLlib는 에피소드 경계가 깔끔하게 정렬된 단일 궤적 배치를 수신하여, 혼합 궤적 없이 안정적인 PPO 업데이트를 수행합니다.
 
 
-
-### Problem 4: 멀티 전략 환경에서의 협동
-관측값에 아군의 전략도 포함되어있습니다. 그런데 전략 배치가 일정하지 않으면 학습이 수렴하지 않을 수 있기에 정해진 전략 배치 템플릿과 전략 분배를 통하여 각 전략당 33%씩 균등하게 학습되도록 했습니다 등등.
-
-
-
-
+## 결과 (Results)
