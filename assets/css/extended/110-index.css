@@ -1,0 +1,191 @@
+:root {
+    --toc-width-collapsed: 60px; 
+    --toc-width-expanded: 260px;
+    
+    /* 기본: 화이트모드 (Light Mode) 변수 */
+    --toc-bg: rgba(255, 255, 255, 0.95);
+    --toc-border: #e2e8f0;
+    --toc-text: #64748b;
+    --toc-text-hover: #0f172a;
+    --toc-indicator: #94a3b8; 
+    --toc-active-indicator: #0f172a; 
+    --toc-active-text: #3b82f6; 
+}
+
+/* 수정 2: OS 시스템 설정 무시. 사이트에 .dark 클래스가 켜졌을 때만 다크모드 적용 */
+html.dark {
+    --toc-bg: rgba(30, 32, 36, 0.95);
+    --toc-border: #282a2c;
+    --toc-text: #94a3b8;
+    --toc-text-hover: #f8fafc;
+    --toc-indicator: #475569;
+    --toc-active-indicator: #f8fafc;
+    --toc-active-text: #f8fafc;
+}
+
+/* --- TOC 사이드바 컨테이너 --- */
+.toc-sidebar {
+    position: fixed;
+    top: 20vh; 
+    right: 30px; 
+    height: 60vh;
+    width: var(--toc-width-collapsed);
+    background: transparent;
+    z-index: 50;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                background 0.4s ease, 
+                box-shadow 0.4s ease;
+    /* 수정 1: 벽에서 떨어졌으므로 4면 모두 둥글게 처리 */
+    border-radius: 16px; 
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+}
+
+.toc-sidebar:hover {
+    width: var(--toc-width-expanded);
+    background: var(--toc-bg);
+    /* 그림자의 방향을 플로팅 박스에 맞게 은은하게 사방으로 퍼지도록 수정 */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); 
+    border: 1px solid var(--toc-border);
+}
+
+
+
+/* --- TOC 내부 스크롤 영역 --- */
+.toc-wrapper {
+    width: var(--toc-width-expanded);
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--toc-indicator) transparent;
+}
+
+.toc-wrapper::-webkit-scrollbar { width: 4px; }
+.toc-wrapper::-webkit-scrollbar-track { background: transparent; }
+.toc-wrapper::-webkit-scrollbar-thumb {
+    background-color: var(--toc-indicator);
+    border-radius: 4px;
+}
+
+/* --- TOC 리스트 아이템 --- */
+#toc-list {
+    list-style: none;
+    padding: 24px 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0px; 
+}
+
+.toc-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--toc-text);
+    font-size: 0.875rem;
+    width: 100%;
+    transition: color 0.2s;
+    cursor: pointer;
+    /* 호버 시 텍스트 영역을 부드럽게 강조하기 위해 약간의 패딩 추가 */
+    padding: 4px 0; 
+}
+
+.toc-link:hover { color: var(--toc-text-hover); }
+
+/* 선(Indicator) 기본 스타일 */
+.toc-indicator {
+    height: 2px;
+    background-color: var(--toc-indicator);
+    margin-right: 16px;
+    transition: background-color 0.3s, transform 0.3s, width 0.3s;
+    border-radius: 2px;
+    flex-shrink: 0; 
+}
+
+.toc-text {
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 20px;
+}
+
+.toc-sidebar:hover .toc-text {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* --- 활성화(Active) 상태 디자인 --- */
+.toc-link.active .toc-indicator {
+    background-color: var(--toc-active-indicator);
+    transform: scaleY(1.5); 
+}
+
+.toc-sidebar:hover .toc-link.active .toc-text {
+    color: var(--toc-active-text);
+    font-weight: 600;
+}
+
+/* --- 계층 구조(들여쓰기 및 선 길이 조절) --- */
+/* 대제목 (h1) */
+.toc-level-1 .toc-indicator { 
+    margin-left: 12px !important; 
+    width: 24px !important; /* 선을 가장 길게 (12 + 24 = 36px로 50px 안에 들어옴) */
+}
+.toc-level-1 .toc-text { font-weight: 700; }
+
+/* 소제목 (h2) */
+.toc-level-2 .toc-indicator { 
+    margin-left: 20px !important; 
+    width: 24px !important; /* 선을 중간 길이로 */
+}
+.toc-level-2 .toc-text { font-size: 0.85rem; }
+
+/* 소소제목 (h3) */
+.toc-level-3 .toc-indicator { 
+    margin-left: 28px !important; 
+    width: 12px !important; /* 선을 아주 짧게 (점처럼) */
+}
+.toc-level-3 .toc-text { font-size: 0.8rem; }
+
+
+/* --- 목차 바가 열렸을 때(Hover)의 디자인 --- */
+
+/* 1. 선(Indicator) 부드럽게 숨기기 */
+.toc-sidebar:hover .toc-indicator {
+    width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    opacity: 0;
+}
+
+/* 2. 텍스트에 부드러운 들여쓰기 애니메이션 적용 */
+.toc-text {
+    /* 기존 transition 속성에 padding-left를 추가하여 부드럽게 움직이게 합니다 */
+    transition: all 0.3s ease !important; 
+}
+
+/* 3. 제목 단계(Level)별 텍스트 들여쓰기 간격 설정 */
+.toc-sidebar:hover .toc-level-1 .toc-text { 
+    padding-left: 20px; 
+}
+.toc-sidebar:hover .toc-level-2 .toc-text { 
+    padding-left: 36px; 
+}
+.toc-sidebar:hover .toc-level-3 .toc-text { 
+    padding-left: 52px; 
+}
+
+
+/* --- 스크롤 이동 시 헤딩(제목) 상단 여백 보정 --- */
+.content h1, 
+.content h2, 
+.content h3 {
+    /* 스크롤해서 해당 요소로 이동했을 때, 화면 맨 위에서부터 120px 띄워줍니다. */
+    scroll-margin-top: 150px; 
+}

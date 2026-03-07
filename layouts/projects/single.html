@@ -1,5 +1,5 @@
 {{ define "main" }}
-<main class="project-main w-full max-w-4xl px-5 flex flex-col items-center">
+<main class="project-main w-full max-w-4xl px-5 flex flex-col items-center relative">
 
     {{ if .Params.math | default .Site.Params.math }}
         {{ partial "math.html" . }}
@@ -90,5 +90,12 @@
             {{ .Content }}
         </div>
     </article>
+
+    <aside class="toc-sidebar" id="toc-sidebar">
+        <div class="toc-wrapper">
+            <ul id="toc-list"></ul>
+        </div>
+    </aside>
+
 </main>
 {{ end }}
