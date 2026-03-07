@@ -76,10 +76,8 @@
     } else if (localStorage.getItem("pref-theme") === "light") {
         document.querySelector("html").dataset.theme = 'light';
         document.querySelector("html").classList.remove('dark');
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.querySelector("html").dataset.theme = 'dark';
-        document.querySelector("html").classList.add('dark');
     } else {
+        // Default to light theme regardless of system settings
         document.querySelector("html").dataset.theme = 'light';
         document.querySelector("html").classList.remove('dark');
     }

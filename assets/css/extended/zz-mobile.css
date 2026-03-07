@@ -1,0 +1,175 @@
+/* ---------------------------------------------------------
+   99. Mobile Responsiveness Overrides
+   --------------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+    /* Base spacing adjustments */
+    .header {
+        padding: 10px 20px !important;
+    }
+
+    .header .menu {
+        padding: 5px 20px !important;
+    }
+
+    /* Profile Section Adjustments */
+    .profile {
+        margin-top: -50px !important;
+        padding: 0 20px !important;
+    }
+
+    .profile header h1 {
+        font-size: 2.0rem !important;
+        /* Smaller title for mobile */
+        margin-bottom: 1.5rem !important;
+    }
+
+    .profile .subtitle {
+        font-size: 1.0rem !important;
+        margin-bottom: 2.5rem !important;
+        padding: 0 10px !important;
+    }
+
+    .profile .buttons {
+        padding: 15px !important;
+        gap: 0.5rem !important;
+    }
+
+    .profile .buttons .button {
+        font-size: 1.2rem !important;
+        padding: 1rem !important;
+    }
+
+    /* Hide TOC Sidebars on mobile to prevent overlap */
+    .toc-sidebar {
+        display: none !important;
+    }
+
+    /* Sticky Bar Positioning for Mobile */
+    .sticky-bar {
+        top: auto !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        flex-direction: row !important;
+        /* Horizontal on mobile for better reach */
+        padding: 8px 15px !important;
+        border-radius: 30px !important;
+        gap: 15px !important;
+    }
+
+    .sticky-bar-divider {
+        display: none !important;
+        /* Hide divider in horizontal layout */
+    }
+
+    .sticky-bar-buttons {
+        gap: 15px !important;
+    }
+
+    /* Content Area Refinement */
+    .main {
+        padding: 0 20px !important;
+    }
+
+    .post-content,
+    .post-header,
+    .post-footer {
+        padding: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    /* Image adjustments */
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Navigation Grid - 2 columns instead of 1 if buttons are small enough, 
+       but keeping 1 column as per user's 10-home.css for consistency */
+    .profile .buttons {
+        flex-direction: column !important;
+    }
+}
+
+/* Extra small devices (phones, 480px and down) */
+@media (max-width: 480px) {
+    .profile header h1 {
+        font-size: 1.7rem !important;
+    }
+
+    .profile .buttons {
+        gap: 0.2rem !important;
+    }
+
+    .profile .buttons .button {
+        font-size: 1.1rem !important;
+    }
+
+    .header {
+        padding: 10px 15px !important;
+    }
+
+    .nav-item {
+        font-size: 1.2rem !important;
+    }
+}
+
+/* Specific overrides for project pages and variables */
+@media (max-width: 768px) {
+    :root {
+        --nav-font-size: 1.3rem !important;
+        --back-button-font-size: 1.1rem !important;
+    }
+
+    .project-nav {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 0.5rem 0 !important;
+    }
+
+    .project-title {
+        font-size: 1.5rem !important;
+    }
+
+    .project-meta-container {
+        margin-top: 2rem !important;
+    }
+
+    .project-info-row {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    .info-divider {
+        display: none !important;
+    }
+
+    .project-links {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+
+    /* Back Button Adjustments */
+    .back-button {
+        position: absolute !important;
+        /* Change to absolute to scroll with content if needed, or just better positioning */
+        top: 10px !important;
+        left: 10px !important;
+        padding: 0.5rem 1rem !important;
+        font-size: 1rem !important;
+    }
+
+    .back-button .icon-arrow {
+        font-size: 1.2rem !important;
+    }
+
+    /* Modal Adjustments */
+    .modal-close {
+        top: 20px !important;
+        right: 20px !important;
+        font-size: 30px !important;
+    }
+}

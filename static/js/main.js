@@ -5,7 +5,7 @@ const themeToggleSticky = document.getElementById("theme-toggle-sticky");
 if (themeToggleSticky) {
     themeToggleSticky.addEventListener("click", () => {
         const html = document.querySelector("html");
-        const currentTheme = html.dataset.theme || (localStorage.getItem("pref-theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light"));
+        const currentTheme = html.dataset.theme || (localStorage.getItem("pref-theme") || "light");
         const newTheme = currentTheme === "dark" ? "light" : "dark";
 
         html.dataset.theme = newTheme;
