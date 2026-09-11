@@ -95,6 +95,8 @@ const removeMathDelimiters = (element) => {
 
 const renderProjectMath = (root) => {
     root?.querySelectorAll('.project-math, .project-inline-math').forEach((element) => {
+        if (element.querySelector(':scope > .katex, :scope > .katex-display')) return
+
         const tex = element.textContent.replace(/[\u200B-\u200D\uFEFF]/g, '').trim()
         if (!tex) return
 
@@ -365,6 +367,8 @@ const highlightProjectContent = (content) => {
 
         codeElement.innerHTML = highlightCode(source, detectCodeLanguage(codeElement))
     })
+
+    renderProjectMath(template.content)
 
     return template.innerHTML
 }
