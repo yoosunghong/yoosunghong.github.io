@@ -295,7 +295,7 @@ export const credentials = [
                     en: 'Open Source Contribution (AMD Schola)',
                 },
                 link: 'https://github.com/GPUOpen-LibrariesAndSDKs/Schola/pull/2',
-                date: '',
+                date: '2026.06',
                 details: {
                     ko: [
                         'Unreal Engine 강화학습 플러그인',

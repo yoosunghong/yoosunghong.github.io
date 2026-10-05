@@ -4,20 +4,11 @@ import { useTheme } from './hooks/useTheme'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 
-import Hero from './components/sections/Hero'
-import About from './components/sections/About'
-import Projects from './components/sections/Projects'
-import Skills from './components/sections/Skills'
-import Activation from './components/sections/Activation'
-import Experience from './components/sections/Experience'
-import Contact from './components/sections/Contact'
-import News from './components/sections/News'
 import ProjectDetail from './components/pages/ProjectDetail'
 import PublicationsPage from './components/pages/PublicationsPage'
-import NewsPage from './components/pages/NewsPage'
+import HomePage from './components/pages/HomePage'
 import { getProjectBySlug } from './data/projects'
 import { getPublicationById } from './data/publications'
-import { getJournalBySlug } from './data/journals'
 
 const normalizePath = () => window.location.pathname.replace(/\/+$/, '') || '/'
 
@@ -26,6 +17,10 @@ function App() {
     const [path, setPath] = useState(normalizePath)
     const [lang, setLang] = useState(() => normalizePath().startsWith('/ko') ? 'ko' : 'en')
     const [showTopButton, setShowTopButton] = useState(false)
+
+    useEffect(() => {
+        document.documentElement.lang = lang
+    }, [lang])
 
     const currentPathRef = useRef(path)
 
@@ -37,7 +32,7 @@ function App() {
         if ('scrollRestoration' in window.history) {
             window.history.scrollRestoration = 'manual'
         }
-        const onPopState = (e) => {
+        const onPopState = () => {
             const nextPath = normalizePath()
             const prevPath = currentPathRef.current
             setPath(nextPath)
@@ -108,10 +103,7 @@ function App() {
     const route = useMemo(() => {
         const clean = path.replace(/^\/ko(?=\/|$)/, '') || '/'
         if (clean === '/publications') return { type: 'publications' }
-        if (clean === '/news') return { type: 'news' }
-        if (clean.startsWith('/news/')) {
-            return { type: 'journal', slug: clean.split('/')[2] }
-        }
+        if (clean === '/news' || clean.startsWith('/news/')) return { type: 'disabled-news' }
         if (clean.startsWith('/publications/')) {
             return { type: 'publication', id: clean.split('/')[2] }
         }
@@ -136,18 +128,8 @@ function App() {
             )
         }
 
-        if (route.type === 'news') {
-            return <NewsPage lang={lang} navigate={navigate} />
-        }
-
-        if (route.type === 'journal') {
-            return (
-                <NewsPage
-                    lang={lang}
-                    navigate={navigate}
-                    selectedEntry={getJournalBySlug(lang, route.slug)}
-                />
-            )
+        if (route.type === 'disabled-news') {
+            return <main className="academic-home"><h1>{lang === 'ko' ? 'AI 뉴스가 비활성화되었습니다' : 'AI News is disabled'}</h1><a href={lang === 'ko' ? '/ko' : '/'}>{lang === 'ko' ? '홈으로 돌아가기' : 'Back to home'}</a></main>
         }
 
         if (route.type === 'project') {
@@ -161,16 +143,7 @@ function App() {
         }
 
         return (
-            <main>
-                <Hero lang={lang} />
-                <About lang={lang} />
-                <Projects lang={lang} navigate={navigate} />
-                <News lang={lang} navigate={navigate} />
-                <Skills lang={lang} />
-                <Activation lang={lang} />
-                <Experience lang={lang} />
-                <Contact lang={lang} />
-            </main>
+            <HomePage lang={lang} navigate={navigate} />
         )
     }
 

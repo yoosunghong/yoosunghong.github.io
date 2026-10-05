@@ -1,4 +1,4 @@
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&family=Source+Serif+4:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
 @tailwind base;
@@ -41,9 +41,9 @@
                   rgba(0,0,0,0.04) 0px 4px 4px;
     --shadow-warm: rgba(78,50,23,0.04) 0px 6px 16px;
 
-    --font-display: 'Pretendard', 'system-ui', sans-serif;
-    --font-body: 'Pretendard', 'system-ui', sans-serif;
-    --font-mono: 'Pretendard', 'system-ui', sans-serif;
+    --font-display: 'Source Serif 4', 'Noto Serif KR', 'Times New Roman', 'Batang', serif;
+    --font-body: 'Source Serif 4', 'Noto Serif KR', 'Times New Roman', 'Batang', serif;
+    --font-mono: 'Consolas', 'Courier New', monospace;
 
     --transition-default: 150ms ease;
     --transition-slow: 300ms ease;
@@ -97,7 +97,7 @@ body {
     background-color: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-body);
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.5;
     letter-spacing: 0.16px;
     transition: background-color var(--transition-slow),
@@ -258,7 +258,7 @@ button, input, textarea, select {
         background: transparent;
         cursor: pointer;
         font-family: var(--font-body);
-        font-size: 13px;
+        font-size: 11px;
         font-weight: 700;
         letter-spacing: 0;
         transition: color 0.15s ease, border-color 0.15s ease;
@@ -392,7 +392,7 @@ button, input, textarea, select {
     .project-entry-index {
         display: block;
         font-family: var(--font-body);
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 700;
         letter-spacing: 0.14em;
         color: rgba(255, 255, 255, 0.66);
@@ -401,7 +401,7 @@ button, input, textarea, select {
 
     .project-entry-title {
         font-family: var(--font-display);
-        font-size: 21px;
+        font-size: 19px;
         font-weight: 700;
         line-height: 1.3;
         letter-spacing: -0.01em;
@@ -412,7 +412,7 @@ button, input, textarea, select {
 
     .project-entry-copy {
         font-family: var(--font-body);
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 400;
         line-height: 1.7;
         color: rgba(255, 255, 255, 0.82);
@@ -483,7 +483,7 @@ button, input, textarea, select {
         gap: 6px;
         margin-left: auto;
         font-family: var(--font-body);
-        font-size: 13px;
+        font-size: 11px;
         font-weight: 700;
         color: #ffffff;
         text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
@@ -500,7 +500,7 @@ button, input, textarea, select {
         align-items: center;
         gap: 9px;
         font-family: var(--font-body);
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 600;
         color: var(--color-fg-secondary);
         background: transparent;
@@ -517,7 +517,7 @@ button, input, textarea, select {
     }
 
     .project-show-more-count {
-        font-size: 12px;
+        font-size: 10px;
         font-weight: 700;
         line-height: 1;
         color: var(--color-fg-muted);
@@ -577,7 +577,7 @@ button, input, textarea, select {
 
     .section-eyebrow {
         font-family: var(--font-body);
-        font-size: 13px;
+        font-size: 11px;
         font-weight: 500;
         letter-spacing: 0.08em;
         text-transform: uppercase;
@@ -587,7 +587,7 @@ button, input, textarea, select {
 
     .page-eyebrow {
         font-family: var(--font-body);
-        font-size: 12px;
+        font-size: 10px;
         font-weight: 700;
         letter-spacing: 0.16em;
         text-transform: uppercase;
@@ -597,7 +597,7 @@ button, input, textarea, select {
 
     .section-title {
         font-family: var(--font-display);
-        font-size: clamp(28px, 4vw, 42px);
+        font-size: clamp(26px, 4vw, 40px);
         font-weight: 700;
         line-height: 1.12;
         letter-spacing: -0.025em;
@@ -606,13 +606,13 @@ button, input, textarea, select {
     }
 
     .section-title.small {
-        font-size: clamp(24px, 3vw, 34px);
+        font-size: clamp(22px, 3vw, 32px);
         margin-top: 34px;
     }
 
     .section-copy {
         font-family: var(--font-body);
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 400;
         line-height: 1.85;
         color: var(--color-fg-secondary);
@@ -625,7 +625,7 @@ button, input, textarea, select {
 
     .page-title {
         font-family: var(--font-display);
-        font-size: clamp(38px, 7vw, 72px);
+        font-size: clamp(36px, 7vw, 70px);
         font-weight: 700;
         line-height: 1.04;
         letter-spacing: -0.04em;
@@ -636,7 +636,7 @@ button, input, textarea, select {
 
     .page-copy {
         font-family: var(--font-body);
-        font-size: 17px;
+        font-size: 15px;
         line-height: 1.8;
         color: var(--color-fg-secondary);
         max-width: 680px;
@@ -670,7 +670,7 @@ button, input, textarea, select {
     .info-card-label,
     .skills-category {
         font-family: var(--font-body);
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 600;
         color: var(--color-fg-muted);
         text-transform: uppercase;
@@ -679,7 +679,7 @@ button, input, textarea, select {
     }
 
     .skills-category {
-        font-size: 12px;
+        font-size: 10px;
         margin: 0;
         padding-top: 5px;
     }
@@ -721,7 +721,7 @@ button, input, textarea, select {
 
     .credential-heading h3 {
         font-family: var(--font-display);
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 700;
         line-height: 1.35;
         color: var(--color-fg);
@@ -735,7 +735,7 @@ button, input, textarea, select {
         padding: 0;
         margin: 0;
         font-family: var(--font-display);
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 700;
         line-height: 1.35;
         color: var(--color-fg);
@@ -781,7 +781,7 @@ button, input, textarea, select {
 
     .info-card-value {
         font-family: var(--font-body);
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 500;
         color: var(--color-fg);
         margin: 0;
@@ -789,7 +789,7 @@ button, input, textarea, select {
 
     .card-title {
         font-family: var(--font-display);
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 700;
         line-height: 1.28;
         letter-spacing: -0.01em;
@@ -799,7 +799,7 @@ button, input, textarea, select {
 
     .card-copy {
         font-family: var(--font-body);
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 400;
         line-height: 1.7;
         color: var(--color-fg-secondary);
@@ -809,7 +809,7 @@ button, input, textarea, select {
     .tag,
     .skill-chip {
         font-family: var(--font-body);
-        font-size: 12px;
+        font-size: 10px;
         font-weight: 500;
         color: var(--color-fg-muted);
         background-color: var(--color-bg-alt);
@@ -819,7 +819,7 @@ button, input, textarea, select {
     }
 
     .skill-chip {
-        font-size: 14px;
+        font-size: 12px;
         color: var(--color-fg);
         border-radius: 6px;
         padding: 6px 14px;
@@ -833,7 +833,7 @@ button, input, textarea, select {
         align-items: center;
         gap: 7px;
         font-family: var(--font-body);
-        font-size: 13px;
+        font-size: 11px;
         font-weight: 600;
         color: var(--color-fg-secondary);
         border: 1px solid var(--color-border);
@@ -844,7 +844,7 @@ button, input, textarea, select {
     }
 
     .pill-link {
-        font-size: 14px;
+        font-size: 12px;
         padding: 9px 22px;
     }
 
@@ -858,7 +858,7 @@ button, input, textarea, select {
 
     .status-badge {
         font-family: var(--font-body);
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 700;
         letter-spacing: 0.04em;
         color: #22c55e;
@@ -883,7 +883,7 @@ button, input, textarea, select {
         position: relative;
         padding-left: 16px;
         font-family: var(--font-body);
-        font-size: 14px;
+        font-size: 12px;
         line-height: 1.7;
         color: var(--color-fg-secondary);
     }
@@ -902,7 +902,7 @@ button, input, textarea, select {
 
     .date-text {
         font-family: var(--font-body);
-        font-size: 13px;
+        font-size: 11px;
         font-weight: 500;
         color: var(--color-fg-muted);
         white-space: nowrap;
@@ -929,14 +929,14 @@ button, input, textarea, select {
 
     .contact-label {
         font-family: var(--font-body);
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 500;
         color: var(--color-fg-muted);
     }
 
     .contact-value {
         font-family: var(--font-body);
-        font-size: 14px;
+        font-size: 12px;
         color: var(--color-fg-secondary);
     }
 
@@ -951,7 +951,7 @@ button, input, textarea, select {
         padding: 8px 14px;
         margin-bottom: 36px;
         font-family: var(--font-body);
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 600;
         cursor: pointer;
     }
@@ -980,7 +980,7 @@ button, input, textarea, select {
         backdrop-filter: blur(10px);
         cursor: pointer;
         font-family: var(--font-body);
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 700;
         transition: transform 0.16s ease, background-color 0.16s ease;
     }
@@ -1005,7 +1005,7 @@ button, input, textarea, select {
     .project-detail-title {
         max-width: 900px;
         font-family: var(--font-display);
-        font-size: clamp(38px, 7vw, 76px);
+        font-size: clamp(36px, 7vw, 74px);
         line-height: 1.03;
         letter-spacing: -0.04em;
         color: #fff;
@@ -1015,7 +1015,7 @@ button, input, textarea, select {
     .project-detail-copy {
         max-width: 720px;
         font-family: var(--font-body);
-        font-size: 17px;
+        font-size: 15px;
         line-height: 1.8;
         color: rgba(255,255,255,0.72);
         margin: 0 0 40px;
@@ -1047,7 +1047,7 @@ button, input, textarea, select {
 
     .project-meta-grid span {
         display: inline-flex;
-        font-size: 11px;
+        font-size: 10px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: rgba(255,255,255,0.52);
@@ -1058,7 +1058,7 @@ button, input, textarea, select {
     .project-meta-grid strong {
         display: inline;
         color: #fff;
-        font-size: 14px;
+        font-size: 12px;
         line-height: 1.5;
         font-weight: 600;
     }
@@ -1129,7 +1129,7 @@ button, input, textarea, select {
         background: rgba(255,255,255,0.07);
         color: rgba(255,255,255,0.78);
         font-family: var(--font-body);
-        font-size: 12px;
+        font-size: 10px;
         font-weight: 600;
         line-height: 1.25;
     }
@@ -1303,7 +1303,7 @@ button, input, textarea, select {
     }
 
     .detail-sidebar h2 {
-        font-size: 16px;
+        font-size: 14px;
         margin: 0 0 14px;
     }
 
@@ -1327,7 +1327,7 @@ button, input, textarea, select {
         scroll-margin-top: 150px;
         margin: 44px 0 18px;
         font-family: var(--font-display);
-        font-size: clamp(24px, 3vw, 34px);
+        font-size: clamp(22px, 3vw, 32px);
         line-height: 1.2;
         letter-spacing: 0;
         color: var(--color-fg);
@@ -1337,7 +1337,7 @@ button, input, textarea, select {
         scroll-margin-top: 150px;
         margin: 44px 0 18px;
         font-family: var(--font-display);
-        font-size: clamp(24px, 3vw, 34px);
+        font-size: clamp(22px, 3vw, 32px);
         line-height: 1.2;
         letter-spacing: 0;
         color: var(--color-fg);
@@ -1347,7 +1347,7 @@ button, input, textarea, select {
         scroll-margin-top: 150px;
         margin: 34px 0 14px;
         font-family: var(--font-display);
-        font-size: clamp(22px, 2.4vw, 26px);
+        font-size: clamp(20px, 2.4vw, 24px);
         line-height: 1.28;
         letter-spacing: 0;
         color: var(--color-fg);
@@ -1357,7 +1357,7 @@ button, input, textarea, select {
         scroll-margin-top: 150px;
         margin: 26px 0 12px;
         font-family: var(--font-display);
-        font-size: 18px;
+        font-size: 16px;
         line-height: 1.38;
         letter-spacing: 0;
         color: var(--color-fg);
@@ -1365,7 +1365,7 @@ button, input, textarea, select {
 
     .project-content p,
     .project-content li {
-        font-size: 15px;
+        font-size: 13px;
         line-height: 1.85;
     }
 
@@ -1537,7 +1537,7 @@ button, input, textarea, select {
     .project-media figcaption,
     .project-code-block figcaption {
         margin-top: 9px;
-        font-size: 12px;
+        font-size: 10px;
         line-height: 1.55;
         color: var(--color-fg-muted);
         text-align: center;
@@ -1579,7 +1579,7 @@ button, input, textarea, select {
 
     .gif-item .gif-caption {
         margin-top: 9px;
-        font-size: 12px;
+        font-size: 10px;
         line-height: 1.55;
         color: var(--color-fg-muted);
         font-family: var(--font-sans);
@@ -1612,7 +1612,7 @@ button, input, textarea, select {
         width: 100%;
         min-width: 560px;
         border-collapse: collapse;
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .project-table-wrap th,
@@ -1673,7 +1673,7 @@ button, input, textarea, select {
         background: transparent;
         color: var(--code-text);
         font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-        font-size: 13px;
+        font-size: 11px;
         line-height: 1.65;
         white-space: pre;
     }
@@ -1749,7 +1749,7 @@ button, input, textarea, select {
         background: var(--color-bg-alt);
         color: var(--color-fg);
         font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-        font-size: 14px;
+        font-size: 12px;
         line-height: 1.7;
         text-align: center;
         white-space: pre;
@@ -1810,7 +1810,7 @@ button, input, textarea, select {
         align-items: center;
         gap: 7px;
         font-family: var(--font-body);
-        font-size: 13px;
+        font-size: 11px;
         font-weight: 600;
         color: var(--color-fg-muted);
         margin-bottom: 16px;
@@ -1819,7 +1819,7 @@ button, input, textarea, select {
     .news-card h3,
     .journal-card h2 {
         font-family: var(--font-display);
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 700;
         line-height: 1.35;
         letter-spacing: 0;
@@ -1834,7 +1834,7 @@ button, input, textarea, select {
         overflow: hidden;
         color: var(--color-fg-secondary);
         font-family: var(--font-body);
-        font-size: 14px;
+        font-size: 12px;
         line-height: 1.75;
         margin: 0;
     }
@@ -1911,7 +1911,7 @@ button, input, textarea, select {
         color: var(--color-fg-secondary);
         cursor: pointer;
         font-family: var(--font-body);
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 700;
         transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
     }
@@ -1954,25 +1954,25 @@ button, input, textarea, select {
 
     .journal-detail-content h3 {
         margin: 40px 0 16px;
-        font-size: clamp(24px, 3vw, 34px);
+        font-size: clamp(22px, 3vw, 32px);
         line-height: 1.2;
     }
 
     .journal-detail-content h4 {
         margin: 30px 0 12px;
-        font-size: 20px;
+        font-size: 18px;
         line-height: 1.35;
     }
 
     .journal-detail-content h5 {
         margin: 24px 0 10px;
-        font-size: 16px;
+        font-size: 14px;
         line-height: 1.45;
     }
 
     .journal-detail-content p {
         margin: 0 0 17px;
-        font-size: 15px;
+        font-size: 13px;
         line-height: 1.9;
     }
 
@@ -2033,14 +2033,14 @@ button, input, textarea, select {
     }
 
     .publication-card h2 {
-        font-size: 20px;
+        font-size: 18px;
         line-height: 1.3;
         margin: 4px 0 8px;
     }
 
     .publication-authors,
     .publication-venue {
-        font-size: 14px;
+        font-size: 12px;
         line-height: 1.5;
         color: var(--color-fg-secondary);
         margin: 0 0 4px;
@@ -2062,7 +2062,7 @@ button, input, textarea, select {
 
     .publication-detail-hero h1 {
         font-family: var(--font-display);
-        font-size: clamp(30px, 4.2vw, 46px);
+        font-size: clamp(28px, 4.2vw, 44px);
         font-weight: 700;
         line-height: 1.08;
         letter-spacing: -0.03em;
@@ -2083,7 +2083,7 @@ button, input, textarea, select {
 
     .publication-meta-grid dt {
         font-family: var(--font-body);
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
@@ -2093,7 +2093,7 @@ button, input, textarea, select {
 
     .publication-meta-grid dd {
         font-family: var(--font-body);
-        font-size: 14px;
+        font-size: 12px;
         line-height: 1.6;
         color: var(--color-fg);
         margin: 0;
@@ -2116,7 +2116,7 @@ button, input, textarea, select {
         color: var(--color-fg-secondary);
         text-decoration: none;
         font-family: var(--font-body);
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 700;
         transition: color 0.15s ease, border-color 0.15s ease;
     }
@@ -2136,7 +2136,7 @@ button, input, textarea, select {
         margin: 0;
         color: var(--color-fg-secondary);
         font-family: var(--font-body);
-        font-size: 16px;
+        font-size: 14px;
         line-height: 1.9;
     }
 
@@ -2186,4 +2186,72 @@ button, input, textarea, select {
             display: none;
         }
     }
+}
+
+
+/* Compact academic homepage and display controls. */
+.display-controls { position: absolute; top: 22px; right: max(24px, calc((100vw - 900px) / 2)); z-index: 50; display: flex; gap: 5px; }
+.display-controls button { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; padding: 0; border: 0; background: transparent; color: var(--color-fg-secondary); font-size: 12px; cursor: pointer; }
+.display-controls button:hover { color: var(--color-fg); }
+.academic-home { max-width: 900px; margin: 0 auto; padding: 100px 30px 64px; font-size: 15px; font-weight: 400; line-height: 1.65; }
+.academic-home[lang="ko"] { font-size: 14px; line-height: 1.85; word-break: keep-all; }
+.academic-home section + section { margin-top: 42px; }
+.academic-intro { display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 42px; align-items: start; }
+.academic-home h1 { font-size: 36px; line-height: 1.2; font-weight: 600; letter-spacing: -0.8px; margin: 0 0 10px; }
+.academic-home h2 { font-size: 23px; font-weight: 600; line-height: 1.3; margin: 0 0 22px; }
+.academic-home h3 { font-size: 16px; line-height: 1.45; font-weight: 600; margin: 0 0 4px; }
+.academic-home p { margin: 3px 0; }
+.academic-home .academic-role { margin-bottom: 16px; color: var(--color-fg-secondary); }
+.academic-portrait { width: 150px; height: 180px; object-fit: cover; object-position: center; }
+.academic-contact { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 17px; }
+.academic-contact span { color: var(--color-fg-muted); }
+.academic-home a { color: #315d87; text-decoration: none; text-underline-offset: 4px; }
+.dark .academic-home a { color: #9bbce0; }
+.academic-home a:hover { text-decoration: underline; }
+.academic-list { display: grid; gap: 24px; }
+.academic-meta { color: var(--color-fg-secondary); font-size: 0.9em; }
+.academic-authors { font-size: 0.94em; }
+.academic-experience-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+@media (max-width: 600px) {
+    .display-controls { top: 16px; right: 16px; }
+    .academic-home { padding: 84px 24px 48px; }
+    .academic-intro { grid-template-columns: minmax(0, 1fr) 90px; gap: 18px; }
+    .academic-portrait { width: 90px; height: 112px; }
+    .academic-intro > div { display: contents; }
+    .academic-intro h1 { grid-column: 1; grid-row: 1; font-size: 30px; align-self: end; }
+    .academic-intro .academic-role { grid-column: 1; grid-row: 2; margin: 0; }
+    .academic-portrait { grid-column: 2; grid-row: 1 / span 2; }
+    .academic-intro p:not(.academic-role), .academic-contact { grid-column: 1 / -1; }
+    .academic-experience-heading { flex-direction: column; gap: 0; }
+}
+
+.academic-home section + section { border-top: 1px solid var(--color-border); padding-top: 32px; }
+.academic-media-entry { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 22px; align-items: start; }
+.academic-preview { display: block; width: 170px; height: 115px; }
+.academic-paper-preview { object-fit: contain; background: #fff; }
+.academic-project-preview { object-fit: cover; }
+.academic-news { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; line-height: 1.45; }
+.academic-news li { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 14px; }
+.academic-skills { margin: 0; display: grid; gap: 12px; }
+.academic-skills > div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 20px; }
+.academic-skills dt { font-weight: 600; }
+.academic-skills dd { margin: 0; color: var(--color-fg-secondary); }
+@media (max-width: 600px) {
+    .academic-media-entry { grid-template-columns: 110px minmax(0, 1fr); gap: 14px; }
+    .academic-preview { width: 110px; height: 84px; }
+    .academic-skills > div { grid-template-columns: 105px minmax(0, 1fr); gap: 12px; }
+    .academic-news li { grid-template-columns: 60px minmax(0, 1fr); gap: 10px; }
+}
+@media (max-width: 380px) {
+    .academic-media-entry { grid-template-columns: 1fr; }
+    .academic-preview { width: 170px; height: 115px; }
+}
+
+/* Let long research titles and certificate names wrap on narrow screens. */
+.academic-entry, .academic-entry > div, .academic-news li > div, .academic-skills dd { min-width: 0; overflow-wrap: anywhere; }
+.academic-news li > .academic-meta { white-space: nowrap; }
+@media (max-width: 600px) {
+    .academic-media-entry { grid-template-columns: 1fr; gap: 10px; }
+    .academic-preview { width: min(100%, 220px); height: 135px; }
+    .academic-home[lang="ko"] { font-size: 15px; line-height: 1.75; }
 }
