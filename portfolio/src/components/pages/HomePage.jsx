@@ -2,7 +2,6 @@ import { personalInfo } from '../../data/personal'
 import { projects } from '../../data/projects'
 import { publications } from '../../data/publications'
 import { experience } from '../../data/experience'
-import { resumeFiles, resumeLabel } from '../../data/navigation'
 import { skills, credentials } from '../../data/skills'
 import profile from '../../assets/profile2.jpg'
 
@@ -26,7 +25,7 @@ export default function HomePage({ lang, navigate }) {
                         : 'I research and build AI systems for games. My work connects reinforcement learning and large language models with game engines, exploring NPC decision-making, cooperative behavior, and interactive simulation.'}</p>
                     <div className="academic-contact">
                         <a href={`mailto:${personalInfo.email}`}>Email</a><span>/</span>
-                        <a href={resumeFiles[lang]}>{resumeLabel[lang]}</a><span>/</span>
+                        <a href={personalInfo.blog} target="_blank" rel="noopener noreferrer">Notion</a><span>/</span>
                         <a href={personalInfo.github} target="_blank" rel="noopener noreferrer">GitHub</a><span>/</span>
                         <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
                     </div>
