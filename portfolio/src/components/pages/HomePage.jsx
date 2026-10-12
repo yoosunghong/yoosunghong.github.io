@@ -5,6 +5,9 @@ import { experience } from '../../data/experience'
 import { skills, credentials } from '../../data/skills'
 import profile from '../../assets/profile2.jpg'
 
+// 프로필 사진 표시 플래그 (임시 비활성화: false, 다시 표시하려면 true로 설정)
+const SHOW_PROFILE_IMAGE = false
+
 export default function HomePage({ lang, navigate }) {
     const detailLink = (path, label) => {
         const href = `${lang === 'ko' ? '/ko' : ''}${path}`
@@ -16,7 +19,7 @@ export default function HomePage({ lang, navigate }) {
     }
     return (
         <main className="academic-home" lang={lang}>
-            <section className="academic-intro" aria-labelledby="profile-name">
+            <section className={`academic-intro${SHOW_PROFILE_IMAGE ? '' : ' no-portrait'}`} aria-labelledby="profile-name">
                 <div>
                     <h1 id="profile-name">{personalInfo.name[lang]}</h1>
                     <p className="academic-role">{lang === 'ko' ? '게임 AI 연구 · 엔지니어링' : 'Game AI Research & Engineering'}</p>
@@ -30,7 +33,9 @@ export default function HomePage({ lang, navigate }) {
                         <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
                     </div>
                 </div>
-                <img className="academic-portrait" src={profile} alt={personalInfo.name[lang]} />
+                {SHOW_PROFILE_IMAGE && (
+                    <img className="academic-portrait" src={profile} alt={personalInfo.name[lang]} />
+                )}
             </section>
             <section id="news" aria-labelledby="news-heading">
                 <h2 id="news-heading">{lang === 'ko' ? '최근 소식' : 'News'}</h2>
