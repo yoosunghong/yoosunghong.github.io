@@ -2,8 +2,8 @@ export const experience = [
     {
         id: 2,
         company: {
-            ko: 'P3CO, Inc.',
-            en: 'P3CO, Inc.',
+            ko: 'Astrapuffs (P3CO, Inc.)',
+            en: 'Astrapuffs (P3CO, Inc.)',
         },
         role: {
             ko: 'AI Researcher, Game AI',

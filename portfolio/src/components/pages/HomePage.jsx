@@ -40,7 +40,7 @@ export default function HomePage({ lang, navigate }) {
             <section id="news" aria-labelledby="news-heading">
                 <h2 id="news-heading">{lang === 'ko' ? '최근 소식' : 'News'}</h2>
                 <ul className="academic-news">
-                    <li><span className="academic-meta">2026.07</span><div>{lang === 'ko' ? 'P3CO, Inc.에서 AI Researcher, Game AI로 일을 시작했습니다.' : 'Joined P3CO, Inc. as an AI Researcher, Game AI.'}</div></li>
+                    <li><span className="academic-meta">2026.07</span><div>{lang === 'ko' ? 'Astrapuffs (P3CO, Inc.)에서 AI Researcher, Game AI로 일을 시작했습니다.' : 'Joined Astrapuffs (P3CO, Inc.) as an AI Researcher, Game AI.'}</div></li>
                     <li><span className="academic-meta">2026.07</span><div>{detailLink('/publications/learned-coordination-conventions', 'Learned Coordination Conventions in Cooperative MARL')}{lang === 'ko' ? ' — ICML 2026 NExT-Game 워크숍 포스터 승인.' : ' — accepted as a poster at the ICML 2026 NExT-Game Workshop.'}</div></li>
                     <li><span className="academic-meta">2026.07</span><div>{lang === 'ko' ? 'OPIc Intermediate Mid 2 (IM2) 취득.' : 'Earned OPIc Intermediate Mid 2 (IM2).'}</div></li>
                     <li><span className="academic-meta">2026.06</span><div><a href="https://github.com/GPUOpen-LibrariesAndSDKs/Schola/pull/2" target="_blank" rel="noopener noreferrer">AMD Schola</a>{lang === 'ko' ? ' — RLlib-Schola 동기화 문제 수정 PR이 공식 저장소에 머지되었습니다.' : ' — my PR fixing RLlib-Schola synchronization was merged into the official repository.'}</div></li>
